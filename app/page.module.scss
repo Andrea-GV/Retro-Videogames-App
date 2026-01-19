@@ -1,3 +1,8 @@
+/*
+Aquí defino variables de componente
+Estos estilos se aplicarán a los componentes page que se importe
+*/
+
 .page {
   --background: #fafafa;
   --foreground: #fff;
@@ -93,7 +98,7 @@ a.secondary {
   border-color: var(--button-secondary-border);
 }
 
-/* Enable hover only on non-touch devices */
+// /* Enable hover only on non-touch devices */
 @media (hover: hover) and (pointer: fine) {
   a.primary:hover {
     background: var(--button-primary-hover);
@@ -124,7 +129,7 @@ a.secondary {
 
 @media (prefers-color-scheme: dark) {
   .logo {
-    filter: invert();
+    filter: invert($color: #fff);
   }
 
   .page {
