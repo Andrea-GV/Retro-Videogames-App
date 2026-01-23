@@ -1,6 +1,6 @@
 -- 1. Creo una semilla para popular la base de datos con unos datos iniciales antes de hacer el CRUD
 -- \c retro_games_db    -- ⚠️ Conecto con la BD para que sepa dónde introducir estos datos
--- ⚠️ Esto me dio error asi que lo quito y ejecuto la conexión directamente,
+-- ⚠️❌ Esto me dio error asi que lo quito y ejecuto la conexión directamente,
 -- 2. Alimento las tablas maestras
 -- 3. Ejecuto el seed por terminal: psql -U postgres -d retro_games_db -f db/seed.sql
 -- 4. Hago queries para comprobar que se ha poblado (✅ todo ha ido ok)

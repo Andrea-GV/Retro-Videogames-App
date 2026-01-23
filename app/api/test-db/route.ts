@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import pool from "@/lib/db";
+import pool from "@/app/lib/db";
 
 // Creo una función asíncrona para probar la conexión a la base de datos
 // https://node-postgres.com/features/pooling
