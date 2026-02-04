@@ -43,6 +43,7 @@ function isValidId(idReceived: string):
 }
 
 // Hago lo mismo para comprobar que un juego existe antes de que se ejecute el resto de su código, y elimino repetición de bloque
+// NO lo aplico en GET pero SÍ en DELETE y PATCH
 async function gameExists(
   id: number,
 ): Promise<
@@ -72,11 +73,11 @@ export async function GET(
 ) {
   console.log("Petición por id");
   // console.log(params); // Para ver su info --> muestra el error de que params es una Promise
-  // Para poder acceder a la info de params, necesito que se cumpla su promesa. A partir de ahí ya podré acceder a sus propiedades
-  const resolvedParams = await params;
-  console.log("ESTE ID -> ", resolvedParams.id); // ✅ Ahora ya puedo ver el id
-
   try {
+    // Para poder acceder a la info de params, necesito que se cumpla su promesa. A partir de ahí ya podré acceder a sus propiedades
+    const resolvedParams = await params;
+    console.log("ESTE ID -> ", resolvedParams.id); // ✅ Ahora ya puedo ver el id
+
     // Convierto el id de string a number xq es el param que espera la función
     // const id = Number(resolvedParams.id); ----> ✅ Al aplicar la función isValidId LO HAGO EN 1 PASO
     // console.log("ID EN TRY ---> ", id);
@@ -104,22 +105,17 @@ export async function GET(
     }
     const id = validateId.id;
 
-    // // Si no existe / null --> 404
-    // const game: Game | null = await getGameById(id);
-    // if (!game || game === null) {
-    //   return NextResponse.json(
-    //     { error: `No se ha encontrado el juego con id ${id}` },
-    //     { status: 404 },
-    //   );
-    // }
-
-    // Implemento gameExists
-    const game = await gameExists(id);
-    if (!game.isValid) {
-      return game.error;
+    // Aquí NO Implemento gameExists, lo verifico directamente en la petición
+    // Si no existe / null --> 404
+    const game: Game | null = await getGameById(id);
+    if (!game || game === null) {
+      return NextResponse.json(
+        { error: `No se ha encontrado el juego con id ${id}` },
+        { status: 404 },
+      );
     }
 
-    return NextResponse.json(game.game, { status: 200 });
+    return NextResponse.json(game, { status: 200 });
   } catch (error: any) {
     console.error("Error en GETById", error);
     return NextResponse.json({ error: error.message }, { status: 500 });
@@ -134,10 +130,10 @@ export async function DELETE(
 ) {
   // Recibe una petición y los params -> id para buscar. Una vez encontrado, se elimina si todo ok
   // Aprox al get(id) --> Sigo su proceso de resolver promise, convertir su id a num, comprobar el num, borrar
-  // 1. Resuelvo params
-  const resolvedParams = await params;
-
   try {
+    // 1. Resuelvo params
+    const resolvedParams = await params;
+
     console.log("Entra a borrar");
 
     // 2. Compruebo el id --> Ya con la función
@@ -202,9 +198,9 @@ export async function PATCH(
 ) {
   console.log("Entra la petición al patch");
 
-  // 1. Resuelvo params
-  const resolvedParams = await params;
   try {
+    // 1. Resuelvo params
+    const resolvedParams = await params;
     // 2. Compruebo el id --> Ya con la función
     const validateId = isValidId(resolvedParams.id);
     if (!validateId.isValid) {
@@ -220,7 +216,7 @@ export async function PATCH(
     //   );
     // }
 
-    // Implemento gameExists
+    // 3. Implemento gameExists
     const game = await gameExists(id);
     if (!game.isValid) {
       return game.error;
@@ -261,18 +257,43 @@ export async function PATCH(
         { status: 400 },
       );
     }
+    // 4.4 Valido que players_num sea un num positivo y en un rango de 1 a 100 (para que no se introduzcan valores inadecuados)
+    if (
+      body.players_num !== undefined &&
+      (isNaN(body.players_num) ||
+        body.players_num <= 0 ||
+        body.players_num > 100)
+    ) {
+      return NextResponse.json(
+        { error: "El players_num debe ser un número entre 1 y 100" },
+        { status: 400 },
+      );
+    }
+    // 4.5 Valido que el id_publisher sea un num positivo (si se modifica)
+    if (
+      body.id_publisher !== undefined &&
+      body.id_publisher !== null &&
+      (isNaN(body.id_publisher) || body.id_publisher <= 0)
+    ) {
+      return NextResponse.json(
+        { error: "El id_publisher debe ser un número positivo" },
+        { status: 400 },
+      );
+    }
 
     console.log("----> Leyendo el body", body);
 
     // 5. Preparo su model con los datos del body
     const gameData: UpdateGame = {
-      name: body.name,
-      release_date: body.release_date || null,
-      players_num: body.players_num || null,
-      id_publisher: body.id_publisher || null,
-      cover_url: body.cover_url || null,
-      rating: body.rating || null,
+      ...body, // Más sencillo usar spread operator
+      // name: body.name,
+      // release_date: body.release_date || null,
+      // players_num: body.players_num || null,
+      // id_publisher: body.id_publisher || null,
+      // cover_url: body.cover_url || null,
+      // rating: body.rating || null,
     };
+    console.log("----> Datos a actualizar", gameData);
     // 5. Llamo al controller para actualizar el juego pasándole el id y los datos recogidos del body
     const updatedGame = await updateGame(id, gameData);
     console.log("----> Devolviendo el juego actualizado", updatedGame);

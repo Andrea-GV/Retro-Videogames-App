@@ -1,0 +1,87 @@
+// Esta hoja de estilos es para iniciar. Después haré layout y compontents más reutilizables
+
+@font-face {
+  font-family: "ArcadeItalicBars";
+  src: url("/fonts/ARCADE_I.TTF") format("truetype");
+  font-display: swap; // El browser pre-carga la fuente y mejora render
+}
+.games-container {
+  margin: 0 auto;
+  padding: 2rem;
+}
+.title {
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  text-align: center;
+  font-family: "ArcadeItalicBars";
+  color: #444343;
+  text-shadow: 2px 2px 0 #2fce71;
+}
+.games-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+
+  //   Haré las medias queries en Layout / Global ... por ver
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+.game {
+  &-card {
+    color: #e3e1e1;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 1.5rem;
+    background: rgba(83, 82, 82, 0.23);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    &:hover {
+      box-shadow: 0 4px 8px rgba(186, 233, 250, 0.6);
+      transform: translateY(-2px);
+      transition: all 0.3s ease;
+    }
+  }
+
+  &-cover {
+    width: 100%;
+    height: 200px;
+    border-radius: 10px;
+    object-fit: cover;
+  }
+
+  &-title {
+    font-size: 1.2rem;
+    margin-top: 0.5rem;
+  }
+
+  &-publisher {
+    font-size: 1rem;
+    margin-top: 0.5rem;
+    color: #49f18f;
+    display: flex;
+
+    &__atari {
+      margin-left: 0.5rem;
+      color: #f74747;
+    }
+    &__sega {
+      margin-left: 0.5rem;
+
+      color: #378fd7;
+    }
+    &__name {
+      margin-left: 0.5rem;
+      color: #efca5b;
+    }
+  }
+
+  &-rating {
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
+    color: #f2de02;
+  }
+}

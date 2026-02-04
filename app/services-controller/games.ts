@@ -104,7 +104,13 @@ export async function getAllGames(): Promise<Game[]> {
 export async function getGameById(id: number): Promise<Game | null> {
   const query = `
     SELECT 
-      g.*,
+      g.id_game,
+      g.name,
+      g.release_date,
+      g.players_num,
+      g.cover_url,
+      g.rating,
+      g.id_publisher,
       p.name AS publisher_name
     FROM games g
     LEFT JOIN publishers p ON g.id_publisher = p.id_publisher 
