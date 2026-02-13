@@ -3,8 +3,7 @@ import baseURL from "@/app/lib/baseURL";
 import ButtonArrow from "@/app/components/ButtonArrow/ButtonArrow";
 import btnStyles from "../../components/ButtonArrow/ButtonArrow.module.scss";
 import styles from "./Games.module.scss";
-// import Search from "@/app/components/Search/Search";
-import { GamesList } from "@/app/components/GamesList/GamesList";
+import Search from "@/app/components/Search/Search";
 
 export default async function Games() {
   // 🚩 prueba a recibir la info de la búsqueda de Search
@@ -27,13 +26,18 @@ export default async function Games() {
 
     // 3. Parseo los datos y los guardo (vienen en formato [{...}, {...}] )
     games = await response.json();
+    console.log("GAMES tiene ---> ", games);
   } catch (err: any) {
     error = err.message;
   }
 
-  const data = games; // Para pasarla al componente GamesList
-
   // Función para filtrar los games por nombre en el componente SEARCH
+  const filterGamesByName = async (name: string) => {
+    console.log("🚩 filterGamesByName");
+  };
+  // const filterGamesByName = (name: string) => {
+  // return games.filter((game) => game.name.toLowerCase().includes(name));
+  // };
 
   // 4. Renders
   // 4.1 Render si hay error
@@ -68,9 +72,9 @@ export default async function Games() {
   return (
     <div className={styles["games__container"]}>
       <h1 className={styles["games__title"]}>Catalogo de Videojuegos</h1>
-      <GamesList data={games} />
-      {/* <section className={styles["games__filter-wrapper"]}>
-
+      <section className={styles["games__filter-wrapper"]}>
+        {/* ⚠️⚠️ AÑADO EL SEARCH PARA BUSCAR EN LA PAG */}
+        {/* Debería recibir por prop la función que ejecute el form */}
         <Search placeholder="Buscar juegos" onSearch={filterGamesByName} />
       </section>
       <section className={styles["games__create-wrapper"]}>
@@ -80,8 +84,8 @@ export default async function Games() {
           variant="link"
           size="medium"
         ></ButtonArrow>
-      </section> */}
-      {/* <section className={styles["games__grid"]}>
+      </section>
+      <section className={styles["games__grid"]}>
         {games.map((game) => (
           <div key={game.id_game} className={styles["game__card"]}>
             {game.cover_url ? (
@@ -141,7 +145,7 @@ export default async function Games() {
             </div>
           </div>
         ))}
-      </section> */}
+      </section>
     </div>
   );
 }

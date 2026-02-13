@@ -1,0 +1,5 @@
+@font-face {
+  $font-family: "ArcadeMinusDotted";
+  src: url("/fonts/ARCADE_DOT.TTF") format("truetype");
+  font-display: swap; // El browser pre-carga la fuente y mejora render
+}

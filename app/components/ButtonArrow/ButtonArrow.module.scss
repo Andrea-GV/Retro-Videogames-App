@@ -1,0 +1,116 @@
+@font-face {
+  font-family: "ArcadeMinusDotted";
+  src: url("/fonts/ARCADE_DOT.TTF") format("truetype");
+  font-display: swap; // El browser pre-carga la fuente y mejora render
+}
+.button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 2px solid #49f18f;
+  border-radius: 8px;
+  background-color: transparent;
+  color: #49f18f;
+  font-weight: 600;
+  font-family: "ArcadeMinusDotted";
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: #49f18f;
+    color: #1a1a1a;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(73, 241, 143, 0.4);
+  }
+  // Invierto los colores de los icons al hacer hover
+  &:hover::before {
+    filter: invert(1) brightness(0.2);
+  }
+  &:active {
+    transform: scale(0.98);
+  }
+
+  // Variantes
+  &--back {
+    padding-left: 0.75rem;
+
+    &::before {
+      content: "";
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      background-image: url(/icons/arrow-left.svg);
+      background-repeat: no-repeat;
+      background-size: contain;
+      background-position: center;
+      flex-shrink: 0;
+    }
+  }
+
+  &--forward {
+    flex-direction: row-reverse;
+    padding-left: 0.75rem;
+
+    &::before {
+      content: "";
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      background-image: url(/icons/arrow-right.svg);
+      background-repeat: no-repeat;
+      background-size: contain;
+      background-position: center;
+      flex-shrink: 0;
+    }
+  }
+  &--link {
+    background-color: #ffb45d;
+
+    border: 2px solid #ffb45d;
+    color: #1a1a1a;
+    &:hover {
+      background-color: transparent;
+      color: #f18f49;
+      box-shadow: 0 6px 20px rgba(255, 190, 77, 0.4);
+    }
+  }
+
+  // Tamaños
+  &--small {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+
+    &.button--back::before {
+      width: 16px;
+      height: 16px;
+    }
+
+    &.button--forward::before {
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  &--medium {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+  }
+
+  &--large {
+    padding: 1rem 2rem;
+    font-size: 1.4rem;
+
+    &.button--back::before {
+      margin-left: -0.5rem;
+      width: 24px;
+      height: 24px;
+    }
+
+    &.button--forward::before {
+      margin-right: -0.5rem;
+      width: 24px;
+      height: 24px;
+    }
+  }
+}

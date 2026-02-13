@@ -1,0 +1,140 @@
+@font-face {
+  font-family: "ArcadeMinusDotted";
+  src: url("/fonts/ARCADE_DOT.TTF") format("truetype");
+  font-display: swap;
+}
+// Traigo todos los iconos que puedo usar
+:root {
+  --icon-delete: url(/icons/trash.svg);
+  --icon-edit: url("/icons/edit.svg");
+  --icon-close: url("/icons/close.svg");
+  --icon-search: url("/icons/search.svg");
+}
+.btn {
+  display: inline-flex;
+  align-items: center;
+  align-self: center;
+  gap: 8px;
+  border-radius: 8px;
+  background-color: transparent;
+  font-weight: 600;
+  font-family: "ArcadeMinusDotted";
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+
+  //   &:hover {
+  //     background-color: #49f18f;
+  //     color: #1a1a1a;
+  //   }
+  //   &:hover::before {
+  //     filter: invert(1) brightness(0.2);
+  //   }
+  &:last-child {
+    margin-left: 1rem;
+  }
+  //  ⚠️ Cuando active el disabled aplicar
+  //     &:disabled {
+  //     opacity: 0.5;
+  //     cursor: not-allowed;
+  //   }
+
+  //   Variantes
+  &--submit {
+    background-color: rgba(73, 241, 143, 0.1);
+    border: 2px solid #49f18f;
+    color: #49f18f;
+
+    // ⚠️ Cuando active el disabled aplicar
+    // &:hover:not(:disabled) {
+    &:hover {
+      background-color: #49f18f;
+      color: #1a1a1a;
+      box-shadow: 0 6px 20px rgba(73, 241, 143, 0.4);
+    }
+  }
+
+  &--cancel,
+  &--delete {
+    background-color: rgba(241, 73, 73, 0.1);
+    border: 2px solid #f15149;
+    color: #f15149;
+
+    &:hover {
+      background-color: #f15149;
+      color: #1a1a1a;
+      box-shadow: 0 6px 20px rgba(241, 73, 73, 0.4);
+    }
+  }
+
+  //   &--search {
+
+  //   }
+  &--edit {
+    background-color: rgba(241, 154, 73, 0.1);
+    border: 2px solid #f1a349;
+    color: #f18f49;
+
+    &:hover {
+      background-color: #f1a349;
+      color: #1a1a1a;
+      box-shadow: 0 6px 20px rgba(241, 154, 73, 0.4);
+    }
+  }
+  // Solo icono
+  &--icon-only {
+    padding: 0.5rem;
+    gap: 0;
+    width: auto;
+    height: auto;
+  }
+
+  // Tamaños
+  &--small {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+  }
+
+  &--medium {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+  }
+
+  &--large {
+    padding: 1rem 2rem;
+    font-size: 1.4rem;
+  }
+}
+
+// Elemento icon (span)
+.btn__icon {
+  display: inline-block;
+  width: 1.2rem;
+  height: 1.2rem;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  flex-shrink: 0;
+
+  &:hover {
+    filter: invert(1) brightness(0.2);
+  }
+}
+// Asigno los iconos según su clase del botón
+.btn--icon--delete .btn__icon {
+  background-image: var(--icon-delete);
+}
+.btn--icon--search .btn__icon {
+  background-image: var(--icon-search);
+}
+.btn--icon--edit .btn__icon {
+  background-image: var(--icon-edit);
+}
+.btn--icon--close .btn__icon {
+  background-image: var(--icon-close);
+}
+
+.btn__text {
+  font-size: 1.2rem;
+}

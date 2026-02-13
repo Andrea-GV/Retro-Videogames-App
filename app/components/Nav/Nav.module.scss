@@ -1,0 +1,93 @@
+@font-face {
+  font-family: "ArcadeMinusDotted";
+  src: url("/fonts/ARCADE_DOT.TTF") format("truetype");
+  font-display: swap;
+}
+// @import "/app/styles/_variables.scss";
+.nav {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.nav__list {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 2rem;
+  align-items: center;
+}
+
+.nav__item {
+  position: relative;
+}
+
+.nav__link {
+  display: block;
+  padding: 0.5rem 0;
+  color: #49f18f;
+  text-decoration: none;
+  font-family: "ArcadeMinusDotted";
+  //   font-family: $font-family;
+
+  font-weight: 500;
+  font-size: 1.4rem;
+  transition: all 0.3s ease;
+  position: relative;
+
+  &:hover {
+    color: #56ff9c;
+    text-shadow: 0 6px 20px rgba(73, 241, 143, 0.4);
+    // Línea ?
+    // &::after {
+    //   width: 100%;
+    //   box-shadow: 0 6px 20px rgba(73, 241, 143, 0.4);
+    // }
+  }
+
+  // Línea decorativa
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #49f18f, #fff);
+    transition: width 0.3s ease;
+  }
+
+  // Link activo
+  &--active {
+    color: #49f18f;
+    font-weight: 600;
+    padding: 0;
+
+    &::after {
+      width: 100%;
+    }
+    // Y si le cambio la línea por un icono?
+    // &::after {
+    //   content: "";
+    //   display: flex;
+    //   width: 15px;
+    //   height: 15px;
+    //   background-image: url(/icons/space-invader.svg);
+    //   background-repeat: repeat-x;
+    //   background-size: contain;
+    //   background-position: center;
+    // }
+  }
+}
+
+// Responsive
+@media (max-width: 768px) {
+  .nav__list {
+    gap: 1rem;
+  }
+
+  .nav__link {
+    font-size: 0.85rem;
+  }
+}

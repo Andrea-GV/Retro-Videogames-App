@@ -1,0 +1,26 @@
+@font-face {
+  font-family: "ArcadeMinusDotted";
+  src: url("/fonts/ARCADE_DOT.TTF") format("truetype");
+  font-display: swap;
+}
+@font-face {
+  font-family: "ArcadeItalicBars";
+  src: url("/fonts/ARCADE_I.TTF") format("truetype");
+  font-display: swap; // El browser pre-carga la fuente y mejora render
+}
+.button__container {
+  margin: 1.2rem 0;
+  align-items: center;
+  display: flex;
+  gap: 16px;
+  justify-content: space-around;
+}
+.game {
+  &__container {
+    margin: 5rem 3rem;
+    padding: 2rem;
+  }
+  &__title {
+    font-family: "ArcadeItalicBars";
+  }
+}
