@@ -3,13 +3,13 @@
 
 "use client";
 
+import { useState } from "react";
+import { Game } from "@/app/models/game";
 import Search from "../Search/Search";
 import ButtonArrow from "../ButtonArrow/ButtonArrow";
-import { Game } from "@/app/models/game";
+import ButtonAction from "../ButtonAction/ButtonAction";
 import btnStyles from "../../components/ButtonArrow/ButtonArrow.module.scss";
 import styles from "./GamesList.module.scss";
-import { useState } from "react";
-import ButtonAction from "../ButtonAction/ButtonAction";
 
 type GameListProps = {
   data: Game[];
@@ -18,7 +18,7 @@ type GameListProps = {
 export const GamesList = ({ data }: GameListProps) => {
   //   const [allGames, setAllGames] = useState<Game[]>(data); // ❓ <--- Esto lo uso para algo? 🤨
   const [filteredGames, setFilteredGames] = useState<Game[]>([]);
-  const [clicked, setClicked] = useState(false); // Render condicional
+  const [clicked, setClicked] = useState(false); // <-- Render condicional
   const [shouldClear, setShouldClear] = useState(false); // <-- Borrará contenido input
   const [searchTerm, setSearchTerm] = useState(""); // <-- Para traer el valor del input
 

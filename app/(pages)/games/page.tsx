@@ -7,8 +7,6 @@ import styles from "./Games.module.scss";
 import { GamesList } from "@/app/components/GamesList/GamesList";
 
 export default async function Games() {
-  // 🚩 prueba a recibir la info de la búsqueda de Search
-
   // 1. Inicializo vacío el array q recogerá todos los games para poder tenerla en scope general después del fetch
   let games: Game[] = [];
   let error: string | null = null; // Para luego hacer un render
@@ -37,7 +35,7 @@ export default async function Games() {
 
   // 4. Renders
   // 4.1 Render si hay error
-  // CAMBIARLO POR COMPONENTE
+  // TODO: CAMBIARLO POR COMPONENTE
   {
     error && (
       <div className="error__container">
@@ -69,79 +67,6 @@ export default async function Games() {
     <div className={styles["games__container"]}>
       <h1 className={styles["games__title"]}>Catalogo de Videojuegos</h1>
       <GamesList data={games} />
-      {/* <section className={styles["games__filter-wrapper"]}>
-
-        <Search placeholder="Buscar juegos" onSearch={filterGamesByName} />
-      </section>
-      <section className={styles["games__create-wrapper"]}>
-        <ButtonArrow
-          children="Crear juego"
-          href="/games/create-game"
-          variant="link"
-          size="medium"
-        ></ButtonArrow>
-      </section> */}
-      {/* <section className={styles["games__grid"]}>
-        {games.map((game) => (
-          <div key={game.id_game} className={styles["game__card"]}>
-            {game.cover_url ? (
-              <img
-                src={game.cover_url}
-                alt={game.name}
-                className={styles["game__cover"]}
-              />
-            ) : (
-              <div className={styles["game__cover"]} />
-            )}
-            <div className={styles["game__info-wrapper"]}>
-              <h2 className={styles["game__title"]}>{game.name}</h2>
-              {game.publisher_name && (
-                <div className={styles["game__publisher"]}>
-                  <p>Plubished by </p>
-                  {game.publisher_name === "Atari" ? (
-                    <h4
-                      className={
-                        styles[
-                          `game__publisher--${game.publisher_name.toLowerCase()}`
-                        ]
-                      }
-                    >
-                      {game.publisher_name}
-                    </h4>
-                  ) : game.publisher_name === "SEGA" ? (
-                    <h4
-                      className={
-                        styles[
-                          `game__publisher--${game.publisher_name.toLowerCase()}`
-                        ]
-                      }
-                    >
-                      {game.publisher_name}
-                    </h4>
-                  ) : (
-                    <h4 className={styles["game__publisher--name"]}>
-                      {game.publisher_name}
-                    </h4>
-                  )}
-                </div>
-              )}
-              {game.rating && (
-                <p className={styles["game__rating"]}>{game.rating}</p>
-              )}
-            </div>
-
-            <div className={styles["game__btn-wrapper"]}>
-              <ButtonArrow
-                children="Ver mas"
-                href={`/games/${game.id_game}`}
-                variant="forward"
-                size="small"
-                className={btnStyles["button--forward"] + styles["game__btn"]}
-              ></ButtonArrow>
-            </div>
-          </div>
-        ))}
-      </section> */}
     </div>
   );
 }
