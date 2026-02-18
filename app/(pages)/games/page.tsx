@@ -1,10 +1,8 @@
 import { Game } from "@/app/models/game";
 import baseURL from "@/app/lib/baseURL";
-import ButtonArrow from "@/app/components/ButtonArrow/ButtonArrow";
-import btnStyles from "../../components/ButtonArrow/ButtonArrow.module.scss";
 import styles from "./Games.module.scss";
 // import Search from "@/app/components/Search/Search";
-import { GamesList } from "@/app/components/GamesList/GamesList";
+import { GamesList } from "@/app/components/Games/GamesList/GamesList";
 
 export default async function Games() {
   // 1. Inicializo vacío el array q recogerá todos los games para poder tenerla en scope general después del fetch

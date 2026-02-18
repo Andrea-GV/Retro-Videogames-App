@@ -9,6 +9,8 @@ type PageProps = {
   };
 };
 
+// TODO:⚠️ necesito transformar el formato de la fecha UTF a DD/MM/YYYY
+
 export default async function GameDetail({ params }: PageProps) {
   // para poder hacer fetch a games[id] necesito resolver otra vez los params
   const resolvedParams = await params;
@@ -31,6 +33,12 @@ export default async function GameDetail({ params }: PageProps) {
   } catch (err: any) {
     error = err.message;
     console.error("Error al cargar el juego:", error);
+    return (
+      <div>
+        <h1>Ups, ha habido un error</h1>
+        <p>{error}</p>
+      </div>
+    );
   }
 
   return error ? (

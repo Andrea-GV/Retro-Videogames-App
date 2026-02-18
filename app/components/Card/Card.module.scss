@@ -1,0 +1,68 @@
+.card {
+  color: #e3e1e1;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 1.5rem;
+  background: rgba(83, 82, 82, 0.23);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  &:hover {
+    box-shadow: 0 4px 8px rgba(186, 233, 250, 0.6);
+    transform: translateY(-2px);
+    transition: all 0.3s ease;
+  }
+
+  &__cover {
+    width: 100%;
+    height: 200px;
+    border-radius: 10px;
+    object-fit: cover;
+  }
+
+  &__info-wrapper {
+    height: 10vh;
+  }
+
+  &__btn-wrapper {
+    margin-top: 1rem;
+    width: auto;
+    float: right;
+  }
+
+  &__title {
+    font-family: "ArcadeMinusDotted";
+    font-size: 1.6rem;
+    margin-top: 0.5rem;
+  }
+
+  &__publisher {
+    font-size: 1rem;
+    margin-top: 0.5rem;
+    color: #49f18f;
+    display: flex;
+
+    &--atari {
+      margin-left: 0.5rem;
+      color: #f74747;
+    }
+    &--sega {
+      margin-left: 0.5rem;
+
+      color: #378fd7;
+    }
+    &--name {
+      margin-left: 0.5rem;
+      color: #ffb45d;
+    }
+  }
+
+  &__rating {
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
+    color: #ffb45d;
+
+    &::after {
+      margin-left: 0.5rem;
+      content: "⭐";
+    }
+  }
+}

@@ -22,7 +22,7 @@ import styles from "./Search.module.scss";
   4. Añado un Effect para que escuche si desde su comp padre se hace click en borrar, elimine el contenido del input
 
   ⚠️ TODO: Cuando finalice que funcione OK Search 
-    ---> Creo comp Card para reutilizar en Publishers, shops etc
+    ---> ✅ Creo comp Card para reutilizar en Publishers, shops etc
     ---> Componente Error para reutilizar en los renders
 */
 

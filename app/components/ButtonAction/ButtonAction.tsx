@@ -12,7 +12,7 @@ interface ButtonActionProps {
   size?: "small" | "medium" | "large";
   onClick?: () => void;
   className?: string;
-  // disabled?: boolean; <--- para los forms
+  disabled?: boolean; // <--- para los forms
   ariaLabel?: string;
 }
 export default function ButtonAction({
@@ -22,7 +22,7 @@ export default function ButtonAction({
   size = "medium",
   onClick,
   className,
-  // disabled = false,
+  disabled = false,
   ariaLabel,
 }: ButtonActionProps) {
   const btnClasses = [
@@ -41,11 +41,10 @@ export default function ButtonAction({
     <button
       onClick={onClick}
       className={btnClasses}
-      // disabled={disabled}
+      disabled={disabled}
       aria-label={ariaLabel}
     >
       {text && <span className={styles.btn__text}>{text}</span>}
-      {/* Probar a comentar el span del icon  */}
       {icon && <span className={styles.btn__icon} aria-hidden="true" />}
     </button>
   );
