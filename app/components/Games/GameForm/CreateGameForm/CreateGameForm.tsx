@@ -125,6 +125,8 @@ export default function CreateGameForm() {
       // Guardo el resultado
       const newGame = await response.json();
       console.log("NEW GAME", newGame);
+      // Ahora que está ok, puedo redirigir a la pag de games o ... a la del juego creado
+      router.push(`/games/${newGame.id_game}`);
     } catch (err: any) {
       console.error("Error al cargar el juego:", err);
       // TODO: Debería manejar los diferentes errores que puede dar?

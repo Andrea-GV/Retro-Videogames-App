@@ -9,7 +9,7 @@ type PageProps = {
   };
 };
 
-// TODO:⚠️ necesito transformar el formato de la fecha UTF a DD/MM/YYYY
+// TODO:⚠️  necesito transformar el formato de la fecha UTF a DD/MM/YYYY
 
 export default async function GameDetail({ params }: PageProps) {
   // para poder hacer fetch a games[id] necesito resolver otra vez los params

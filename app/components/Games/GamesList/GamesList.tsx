@@ -8,8 +8,9 @@ import { Game } from "@/app/models/game";
 import Search from "../../Search/Search";
 import ButtonArrow from "../../ButtonArrow/ButtonArrow";
 import ButtonAction from "../../ButtonAction/ButtonAction";
-import styles from "./GamesList.module.scss";
 import { GameCard } from "../../Card/Card";
+import { Select } from "../../Select/Select";
+import styles from "./GamesList.module.scss";
 
 type GameListProps = {
   data: Game[];
@@ -38,9 +39,31 @@ export const GamesList = ({ data }: GameListProps) => {
   };
 
   console.log("DATOS EN GAMELIST", data);
+  const publisherOpts: { label: string; value: string }[] = [
+    { label: "Atari", value: "1" },
+    { label: "Atari", value: "1" },
+    { label: "Nintendo", value: "2" },
+    { label: "SEGA", value: "3" },
+    { label: "Capcom", value: "4" },
+    { label: "Konami", value: "5" },
+    { label: "Namco", value: "6" },
+    { label: "Square", value: "7" },
+    { label: "Enix", value: "8" },
+    { label: "Sierra On-Line", value: "9" },
+    { label: "LucasArts", value: "10" },
+    { label: "Taito", value: "11" },
+    { label: "Sony Interactive Entertainment", value: "12" },
+    { label: "Microsoft Studios", value: "13" },
+  ];
+
   return (
     <>
       <section className={styles["games__filter-wrapper"]}>
+        <Select
+          name="publisher"
+          label="Filtrar por publisher"
+          options={publisherOpts}
+        />
         <Search
           placeholder="Buscar juegos"
           onSearch={filterGamesByName}
