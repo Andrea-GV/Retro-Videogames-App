@@ -8,7 +8,12 @@
   --icon-delete: url(/icons/trash.svg);
   --icon-edit: url("/icons/edit.svg");
   --icon-close: url("/icons/close.svg");
+  --icon-close-red: url("/icons/close-red.svg");
   --icon-search: url("/icons/search.svg");
+  --size-xsmall: 12px;
+  --size-small: 18px;
+  --size-medium: 24px;
+  --size-large: 30px;
 }
 .btn {
   display: inline-flex;
@@ -31,9 +36,12 @@
   //   &:hover::before {
   //     filter: invert(1) brightness(0.2);
   //   }
-  &:last-child {
-    margin-left: 1rem;
-  }
+
+  // Espacio para el último botón
+  // &:last-child {
+  //   margin-left: 1rem;
+  // }
+
   //  ⚠️ Cuando active el disabled aplicar
   //     &:disabled {
   //     opacity: 0.5;
@@ -68,6 +76,15 @@
     }
   }
 
+  &--close,
+  &--close-red {
+    border: none;
+
+    &:hover {
+      filter: invert(1) brightness(0.6);
+    }
+  }
+
   //   &--search {
 
   //   }
@@ -91,6 +108,10 @@
   }
 
   // Tamaños
+  &--xsmall {
+    padding: 0.13rem 0.24rem;
+    font-size: 0.2rem;
+  }
   &--small {
     padding: 0.5rem 1rem;
     font-size: 0.875rem;
@@ -120,19 +141,36 @@
   &:hover {
     filter: invert(1) brightness(0.2);
   }
+  &--xsmall {
+    width: var(--size-xsmall);
+    height: var(--size-xsmall);
+  }
+  &--small {
+    width: var(--size-small);
+    height: var(--size-small);
+  }
+  &--medium {
+    font-size: var(--size-medium);
+  }
+  &--large {
+    font-size: var(--size-large);
+  }
 }
 // Asigno los iconos según su clase del botón
-.btn--icon--delete .btn__icon {
+.btn__icon--delete .btn__icon {
   background-image: var(--icon-delete);
 }
-.btn--icon--search .btn__icon {
+.btn__icon--search .btn__icon {
   background-image: var(--icon-search);
 }
-.btn--icon--edit .btn__icon {
+.btn__icon--edit .btn__icon {
   background-image: var(--icon-edit);
 }
-.btn--icon--close .btn__icon {
+.btn__icon--close .btn__icon {
   background-image: var(--icon-close);
+}
+.btn__icon--close-red .btn__icon {
+  background-image: var(--icon-close-red);
 }
 
 .btn__text {

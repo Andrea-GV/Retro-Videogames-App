@@ -6,8 +6,9 @@
 .select-wrapper {
   display: flex;
   flex-direction: column;
-  margin: 1rem;
+  // margin: 0 1rem;
   font-family: "ArcadeMinusDotted";
+  height: 2.7rem;
 
   &:first-child {
     margin-top: 0;
@@ -21,30 +22,23 @@
   }
 }
 .label {
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 500;
   color: #49f18f;
   letter-spacing: 1.5px;
 }
 .select {
-  margin-top: 0.6rem;
   background-color: rgba(73, 241, 143, 0.1);
   border: 1px solid #49f18f;
-  border-top: none;
-  border-left: none;
   border-radius: 8px;
   flex: 1;
-  color: #49f18f;
+  color: rgba(73, 241, 143, 0.6);
   padding: 0.5rem 0.75rem;
-  font-size: 0.95rem;
+  font-size: 1rem;
   outline: none;
   font-family: inherit;
   font-family: "ArcadeMinusDotted";
 
-  &::placeholder {
-    color: rgba(73, 241, 143, 0.6);
-    font-family: "ArcadeMinusDotted";
-  }
   &:focus-within {
     background-color: rgba(73, 241, 143, 0.2);
     box-shadow: 0 0 12px rgba(73, 241, 143, 0.3);
@@ -55,7 +49,7 @@
 }
 .option {
   font-family: inherit;
-  font-family: "ArcadeMinusDotted";
+  color: #49f18f;
 }
 .error {
   display: block;

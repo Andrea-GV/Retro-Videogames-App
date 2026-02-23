@@ -4,12 +4,20 @@ import styles from "./ButtonAction.module.scss";
 // Se puede indicar si: sólo texto, texto + icono, sólo icono
 // Su icon se agrega por css precargadas las urls al inicio del archivo
 
-type IconType = "search" | "delete" | "edit" | "icon";
+type IconType = "search" | "delete" | "edit" | "icon" | "close" | "close-red";
 interface ButtonActionProps {
   text?: string; // <--- para ver si text / text + icon
-  variant?: "search" | "delete" | "edit" | "icon" | "submit" | "cancel";
+  variant?:
+    | "search"
+    | "delete"
+    | "edit"
+    | "icon"
+    | "submit"
+    | "cancel"
+    | "close"
+    | "close-red";
   icon?: IconType;
-  size?: "small" | "medium" | "large";
+  size?: "xsmall" | "small" | "medium" | "large";
   onClick?: () => void;
   className?: string;
   disabled?: boolean; // <--- para los forms
@@ -29,9 +37,8 @@ export default function ButtonAction({
     styles.btn,
     styles[`btn--${variant}`],
     styles[`btn--${size}`],
-    // styles[`btn__icon`],
-    icon && styles[`btn--icon--${icon}`], // <- qué icon
-    !text && icon && styles[`btn--icon-only`], // <- sólo icon
+    icon && styles[`btn__icon--${icon}`], // <- qué icon
+    !text && icon && styles[`btn__icon-only`], // <- sólo icon
     className,
   ]
     // .filter(Boolean)   <-- Si activo el disabled es necesario
@@ -45,7 +52,13 @@ export default function ButtonAction({
       aria-label={ariaLabel}
     >
       {text && <span className={styles.btn__text}>{text}</span>}
-      {icon && <span className={styles.btn__icon} aria-hidden="true" />}
+      {icon && (
+        <span
+          // className={styles[`btn__icon btn__icon--${size}`]}
+          className={styles.btn__icon + " " + styles[`btn__icon--${size}`]}
+          aria-hidden="true"
+        />
+      )}
     </button>
   );
 }

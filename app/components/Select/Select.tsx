@@ -1,5 +1,4 @@
 "use client";
-// import { useFormContext } from "react-hook-form";
 import styles from "./Select.module.scss";
 
 type Option = {
@@ -14,16 +13,33 @@ type SelectProps = {
   options: Option[]; // <--- le uqiero pasar las opciones por prop dependiendo del Form donde lo use
   rules?: object; //   Para usar rules (required, max-min length...)
   className?: string;
+  value?: string | number | null; // Le añado el value para poder controlar qué valor he seleccionado
+  onChange?: (value: string | number) => void; // Registra el valor seleccionado
 };
 
 export const Select = (props: SelectProps) => {
-  const { name, label, placeholder, options, rules, className } = props;
+  const {
+    name,
+    label,
+    placeholder,
+    options,
+    rules,
+    className,
+    value,
+    onChange,
+  } = props;
 
-  // const {
-  //   register,
-  //   formState: { errors },
-  // } = useFormContext();
-  // const error = errors[name];
+  // Registro el cambio de selección
+  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedValue = e.target.value;
+
+    if (selectedValue === "default") return; // <-- Esto es para que muestre como value el placeholder
+
+    if (onChange) {
+      console.log("selectedValue", selectedValue);
+      onChange(selectedValue);
+    }
+  };
 
   return (
     <div className={styles["select-wrapper"]}>
@@ -35,8 +51,15 @@ export const Select = (props: SelectProps) => {
       <select
         id={name}
         className={styles.select}
-        // {...register(name, rules)} // Le vendrán heredadas
+        // defaultValue={"default"} // <--- No me dejaba actualizar value si l odejo
+        value={value ?? "default"} // qué valor registro --< si es null que muestre por defecto el placeholder
+        onChange={handleChange} // Manejo el cambio
       >
+        {placeholder && (
+          <option value="default" disabled>
+            {placeholder}
+          </option>
+        )}
         {options.map((option) => (
           <option
             key={option.value}

@@ -1,6 +1,7 @@
 "use client"; // Next --> interacciones de usuario = Client Component, de lo contrario es un Server
 import { useEffect, useState } from "react";
 import styles from "./Search.module.scss";
+import { on } from "events";
 
 /* PASOS:
   1. Creo estructura para visualizar --> estilado ✅
@@ -20,7 +21,8 @@ import styles from "./Search.module.scss";
           Hacer este componente reutilizable para mostrarlo en cada página y que reciba por props principalmente la función que ejecute la búsqueda
           Su componente padre ejecutará la función de filtrado para renderizar TODOS los Games o los FilteredGames
   4. Añado un Effect para que escuche si desde su comp padre se hace click en borrar, elimine el contenido del input
-
+  5. También quiero que pueda renderizar según se hace onChange en el input
+    --> 
   ⚠️ TODO: Cuando finalice que funcione OK Search 
     ---> ✅ Creo comp Card para reutilizar en Publishers, shops etc
     ---> Componente Error para reutilizar en los renders
@@ -28,7 +30,8 @@ import styles from "./Search.module.scss";
 
 type SearchProps = {
   placeholder?: string;
-  onSearch: (searchTerm: string) => Promise<void> | void; // la búsqueda se hará en su pág y es una promise que se resolverá al hacer fetch a la función de búsqueda
+  // onSearch: (searchTerm: string) => Promise<void> | void; // la búsqueda se hará en su pág y es una promise que se resolverá al hacer fetch a la función de búsqueda
+  onSearch: (searchTerm: string) => void; // <-- Para aplicar onChange ya no es async
   shouldClear?: boolean;
 };
 
@@ -43,6 +46,16 @@ export default function Search({
   // ⚠️ No puede ir como parte del componente como en otras ocasiones, al ser Client Comp,
   //  necesito que se integre en una función (handleSearch) que se ejecute al hacer submit en el input
 
+  // Este effect es para ir filtrando según se escribe en el input
+  useEffect(() => {
+    // Le añado una espera?
+    console.log("ESCRIBIENDO TIEMPO REAL", searchTerm);
+    if (searchTerm.length > 1) {
+      // ❓ SEría mejor un setTimeOut?
+      onSearch(searchTerm);
+    }
+  }, [searchTerm]);
+
   // Este effect es para que escuche si se hace click en Delete y borre el contenido del input
   useEffect(() => {
     if (shouldClear) {
@@ -52,8 +65,12 @@ export default function Search({
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Si el input tiene valor, es ejecutable el submit
-    if (!searchTerm.trim()) return;
+
+    // ✅ Si el input no tiene valor, que envíe el valor vacío para resetear y mostrar todos los games
+    if (!searchTerm.trim()) {
+      await onSearch("");
+      return;
+    }
     setSubmit(true);
 
     try {
@@ -61,8 +78,9 @@ export default function Search({
     } catch (error: any) {
       throw new Error(error.message);
     } finally {
-      // Le devuelvo el estado a false "para resetear"
+      // Le devuelvo el estado a false "para resetear" y vacío su contenido
       setSubmit(false);
+      setSearchTerm("");
     }
   };
 

@@ -13,11 +13,12 @@ type FormInputSelectProps = {
   placeholder?: string;
   options: Option[]; // <--- le uqiero pasar las opciones por prop dependiendo del Form donde lo use
   rules?: object; //   Para usar rules (required, max-min length...)
+  value?: string | number | null;
   className?: string;
 };
 
 export const FormInputSelect = (props: FormInputSelectProps) => {
-  const { name, label, placeholder, options, rules, className } = props;
+  const { name, label, placeholder, options, rules, value, className } = props;
 
   const {
     register,
@@ -35,10 +36,14 @@ export const FormInputSelect = (props: FormInputSelectProps) => {
       <select
         id={name}
         className={styles.select}
+        // value={value ?? "default"}
         {...register(name, rules)} // Le vendrán heredadas
       >
-        {/* <option value="">Opción1</option> 
-            Las opciones debería mapearlas  */}
+        {placeholder && (
+          <option value="default" disabled selected>
+            {placeholder}
+          </option>
+        )}
         {options.map((option) => (
           <option
             key={option.value}
@@ -49,6 +54,7 @@ export const FormInputSelect = (props: FormInputSelectProps) => {
           </option>
         ))}
       </select>
+      {error && <span className={styles.error}>{error.message as string}</span>}
     </div>
   );
 };

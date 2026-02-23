@@ -201,6 +201,7 @@ export default function CreateGameForm() {
             name="id_publisher"
             label="Publishers"
             options={selectOptions}
+            placeholder="Select the publisher"
           />
         </div>
 
