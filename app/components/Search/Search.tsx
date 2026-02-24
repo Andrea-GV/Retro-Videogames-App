@@ -1,7 +1,6 @@
 "use client"; // Next --> interacciones de usuario = Client Component, de lo contrario es un Server
 import { useEffect, useState } from "react";
 import styles from "./Search.module.scss";
-import { on } from "events";
 
 /* PASOS:
   1. Creo estructura para visualizar --> estilado ✅
@@ -38,7 +37,7 @@ type SearchProps = {
 export default function Search({
   placeholder = "",
   onSearch,
-  shouldClear = false, // Para que se limpie el input al ejecutar función limpiadora
+  shouldClear = false, // Para que se limpie el input al ejecutar función limpiadora en comp padre
 }: SearchProps) {
   const [searchTerm, setSearchTerm] = useState(""); // <-- Recoge valor input
   const [submit, setSubmit] = useState(false); // <-- Para el submit del Form ejecutado desde la pag
@@ -49,7 +48,6 @@ export default function Search({
   // Este effect es para ir filtrando según se escribe en el input
   useEffect(() => {
     // Le añado una espera?
-    console.log("ESCRIBIENDO TIEMPO REAL", searchTerm);
     if (searchTerm.length > 1) {
       // ❓ SEría mejor un setTimeOut?
       onSearch(searchTerm);
@@ -95,6 +93,7 @@ export default function Search({
           type="text"
           value={searchTerm}
           onChange={handleChange}
+          onBlur={(e) => setSearchTerm("")} // Evita mantener el término introducido si no se hizo onSubmit
           placeholder={placeholder}
           className={styles["search__input"]}
           aria-label={placeholder}
