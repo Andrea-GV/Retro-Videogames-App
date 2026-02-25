@@ -55,11 +55,10 @@ export const Select = (props: SelectProps) => {
         value={value ?? "default"} // qué valor registro --< si es null que muestre por defecto el placeholder
         onChange={handleChange} // Manejo el cambio
       >
-        {placeholder && (
-          <option value="default" disabled>
-            {placeholder}
-          </option>
-        )}
+        <option value="default" disabled>
+          {placeholder}
+        </option>
+
         {options.map((option) => (
           <option
             key={option.value}

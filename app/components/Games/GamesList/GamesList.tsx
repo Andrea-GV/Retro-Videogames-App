@@ -49,21 +49,15 @@ export const GamesList = ({ data }: GameListProps) => {
   const [clicked, setClicked] = useState(false); // <-- Render condicional por búsqueda
   const [shouldClear, setShouldClear] = useState(false); // <-- Borrará contenido input
   const [searchTerm, setSearchTerm] = useState(""); // <-- Para traer el valor del input
-  const [selectedPublisher, setSelectedPublisher] = useState<string | null>(
-    null,
-  ); // Lo cambio para poder seleccionar varios publisher
+  // const [selectedPublisher, setSelectedPublisher] = useState<string | null>(null,); // Lo cambio para poder seleccionar varios publisher
   // <-- Registra el publisher para filtrar
-  // const [selectedPublisher, setSelectedPublisher] = useState<string[]>([]); // Lo cambio de string a string[]  y quito null para poder seleccionar varios publisher
+  const [selectedPublisher, setSelectedPublisher] = useState<string[]>([]); // Lo cambio de string a string[]  y quito null para poder seleccionar varios publisher
   // const [selectedRating, setSelectedRating] = useState<string | null>(null); // Para añadir otro filtro por rating
 
   // ❓ USar un useEffect para escuchar searchTerm y que renderice filteredGames según typing
   // Ahora DISPARA la función de filtrado en función de si cambia alguna de sus dependencias a vigilar
   useEffect(() => {
-    // if (!searchTerm) {
-    //   console.log("No hay nada en el input", searchTerm);
-    //   setFilteredGames([]);
-    //   setShouldClear(true);
-    // }
+    console.log("cambio en searchTerm o selectedPublisher");
     filterGames();
   }, [searchTerm, selectedPublisher]);
 
@@ -72,42 +66,28 @@ export const GamesList = ({ data }: GameListProps) => {
     // Recojo todos los juegos y luego aplicaré filtros
     let results = data;
 
-    // Sólo publisher
-    if (selectedPublisher) {
-      results = data.filter((game) => {
-        return game.id_publisher?.toString() === selectedPublisher;
+    // Sólo publisher (si hay seleccionado)
+    if (selectedPublisher.length > 0) {
+      results = results.filter((game) => {
+        // console.log("🟢 selectedPublisher", selectedPublisher);
+        return selectedPublisher.includes(game.id_publisher?.toString() || ""); // <-- varios
+        // return game.id_publisher?.toString() === selectedPublisher; // <-- un publisher
       });
     }
     // Sólo name
     if (searchTerm.trim() !== "") {
-      results = data.filter((game) => {
+      results = results.filter((game) => {
         return game.name.toLowerCase().includes(searchTerm.toLowerCase());
-      });
-    }
-    // Ambos
-    if (selectedPublisher && searchTerm.trim() !== "") {
-      results = data.filter((game) => {
-        return (
-          game.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
-          game.id_publisher?.toString() === selectedPublisher
-        );
       });
     }
 
     setFilteredGames(results);
     // setClicked(true); <---- culpable de RENDER inicial aparezca botón basura (y aparezca siempre)
-    setClicked(searchTerm.trim() !== "" || selectedPublisher !== null); // Pero si está vacío o no se ha seleccionado
+    // setClicked(searchTerm.trim() !== "" || selectedPublisher !== null); // <--- Un P
+    setClicked(searchTerm.trim() !== "" || selectedPublisher.length > 0); // Pero si está vacío o no se ha seleccionado
     setShouldClear(false);
   };
 
-  // const filterGamesByPublisher = async (publisher: string) => {
-  //   setClicked(true);
-  //   const filterGames = data.filter((game) => {
-  //     return game.id_publisher?.toString() === publisher;
-  //   });
-  //   setFilteredGames(filterGames);
-  //   setShouldClear(false);
-  // };
   /* const filterGamesByRating = async (rating: string) => {
     setClicked(true);
     const filterGames = data.filter((game) => {
@@ -118,11 +98,18 @@ export const GamesList = ({ data }: GameListProps) => {
     setShouldClear(false);
   };*/
 
-  // Borra el Select
-  const handleClearFilter = () => {
-    setSelectedPublisher(null);
-    setFilteredGames([]);
-    setClicked(false);
+  // Borra el Publisher
+  const handleClearPublisher = (publisherId: string) => {
+    // setSelectedPublisher(null); // <-- un P
+
+    console.log("🟢 publisherId", publisherId);
+    console.log("🚩 selectedPublisher a eliminar", selectedPublisher); // CUál es el eliminado?
+    const deleteId = selectedPublisher.filter((id) => id !== publisherId);
+    console.log(
+      "🚩 Restantes publishers después de filtrar el seleccionado",
+      deleteId,
+    );
+    setSelectedPublisher((prev) => prev.filter((id) => id !== publisherId));
   };
 
   // Borra el input
@@ -133,32 +120,15 @@ export const GamesList = ({ data }: GameListProps) => {
 
   // Borra TODO
   const handleClearAllFilters = () => {
-    setSelectedPublisher(null); // <---- SELECT al placeholder después de borrar
-    setClicked(false);
-    // console.log("🟢 searchTerm queda", searchTerm);
+    // setSelectedPublisher(null); // <---- SELECT al placeholder después de borrar
+    setSelectedPublisher([]); // <-- Varios P
     setSearchTerm(""); // NEcesito resetearlo. Sino, aunque pulse, se queda 1 vez
     setShouldClear(true);
   };
 
   // Función cambio en Search (name)
   const handleGamesByName = async (name: string) => {
-    // Si está vacío el término de búsqueda, reseteo y muestro todos los games
-    // if (name.trim() === "") {
-    //   setFilteredGames([]);
-    //   setClicked(false);
-    //   setSearchTerm("");
-    //   return;
-    // }
-
-    // setClicked(true);
     setSearchTerm(name);
-
-    // const filterGames = data.filter((game) => {
-    //   return game.name.toLowerCase().includes(name.toLowerCase());
-    // });
-
-    // setFilteredGames(filterGames);
-    // setShouldClear(false);
   };
 
   // Función para manejar el cambio en el Select de publisher
@@ -166,24 +136,20 @@ export const GamesList = ({ data }: GameListProps) => {
     console.log("Publisher seleccionado:", value);
     const publisherId = value as string;
     console.log("publisherId", publisherId);
-    // Cuando solo podía seleccionar un publisher tenía
-    setSelectedPublisher(publisherId);
-    // if (publisherId) {
-    //   console.log("Filtro por publisher", publisherId);
-    //   await filterGamesByPublisher(publisherId);
-    // }
+    // ⚠️ Cuando solo podía seleccionar UN publisher tenía ⬇️
+    // setSelectedPublisher(publisherId);
 
-    // Si ya está seleccionado, no poder seleccionarlo otra vez
+    // VARIOS: Si ya está seleccionado, no poder seleccionarlo otra vez
     if (selectedPublisher?.includes(publisherId)) {
       return;
     }
-    // Añado a la lista los que haya seleccionado
-    // setSelectedPublisher((prev) => [...prev, publisherId]);
-    // console.log("🟢 selectedPublisher after filter", selectedPublisher);
+    // VARIOS: Añado a la lista. Creo copia y añado el selected por su id
+    setSelectedPublisher((prev) => [...prev, publisherId]);
+    console.log("🟢 selectedPublisher after filter", selectedPublisher);
   };
 
-  const selectedPublisherChip = () => {
-    const chip = publisherOpts.find((opt) => opt.value === selectedPublisher);
+  const selectedPublisherChip = (publisherId: string) => {
+    const chip = publisherOpts.find((opt) => opt.value === publisherId); // <-- un P
     return chip ? chip.label : "";
   };
 
@@ -196,13 +162,10 @@ export const GamesList = ({ data }: GameListProps) => {
             options={publisherOpts}
             placeholder="Filtrar por publisher"
             onChange={handlePublisherChange}
-            // ❓ Mejor dejar la función y más limpio ? O como puedo dejarlo así, mejor así? ⬇️
-            // onChange={(value) => setSelectedPublisher(value as string)}
           />
           <Search
             placeholder="Buscar juegos"
-            // onSearch={handleGamesByName}
-            onSearch={(name) => setSearchTerm(name)}
+            onSearch={handleGamesByName}
             shouldClear={shouldClear}
           />
           {clicked && (
@@ -217,19 +180,22 @@ export const GamesList = ({ data }: GameListProps) => {
         </div>
 
         <div className={styles["games__filter-chip-wrapper"]}>
-          {/* Chips Filtros */}
-          {selectedPublisher && (
-            <span className={styles["games__chip"]}>
-              {selectedPublisherChip()}
+          {/* Chips Publishers */}
+          {selectedPublisher.map((publisherId) => (
+            // {selectedPublisher && ( // <-- UN P
+            <span key={publisherId} className={styles["games__chip"]}>
+              {/* {selectedPublisherChip()} <--- UN P */}
+              {selectedPublisherChip(publisherId)}
               <ButtonAction
                 variant="close-red"
                 size="xsmall"
                 icon="close-red"
-                onClick={handleClearFilter}
+                // onClick={handleClearPublisher} // <-- UN P
+                onClick={() => handleClearPublisher(publisherId)}
                 ariaLabel="Elimina filtro de publisher"
               />
             </span>
-          )}
+          ))}
           {/* Chips término */}
           {searchTerm && (
             <span className={styles["games__chip"]}>
@@ -271,16 +237,9 @@ export const GamesList = ({ data }: GameListProps) => {
             <p className={styles["games__search-no-results"]}>
               No hay juegos que coincidan con la búsqueda
               {searchTerm && <strong> "{searchTerm}" </strong>}
-              {selectedPublisher && (
-                <strong>
-                  {/* Para que muestre el label del selectedPublisher lo busco */}
-                  {/* " {
-                    publisherOpts.find((opt) => opt.value === selectedPublisher)
-                      ?.label
-                  }" */}
-                  "{selectedPublisherChip()}"
-                </strong>
-              )}
+              {selectedPublisher.map((publisherId) => (
+                <strong> "{selectedPublisherChip(publisherId)}"</strong>
+              ))}
             </p>
           ) : (
             <section className={styles["games__grid"]}>

@@ -47,8 +47,14 @@ export default function Search({
 
   // Este effect es para ir filtrando según se escribe en el input
   useEffect(() => {
-    // Le añado una espera?
-    if (searchTerm.length > 1) {
+    // Si está vacío, resetea la búsqueda
+    if (searchTerm.trim() === "") {
+      onSearch("");
+      return;
+    }
+    // Si comienza a escribir que empiece a buscar/filtrar
+    // if (searchTerm.length > 1) { // <-- Si quiero q espera a q tenga al menos 2 caracteres
+    if (searchTerm.length) {
       // ❓ SEría mejor un setTimeOut?
       onSearch(searchTerm);
     }
@@ -61,24 +67,22 @@ export default function Search({
     }
   }, [shouldClear]);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     // ✅ Si el input no tiene valor, que envíe el valor vacío para resetear y mostrar todos los games
     if (!searchTerm.trim()) {
-      await onSearch("");
+      onSearch("");
       return;
     }
     setSubmit(true);
 
     try {
-      await onSearch(searchTerm); // Su comp padre decide qué tiene que hacer
-    } catch (error: any) {
-      throw new Error(error.message);
-    } finally {
-      // Le devuelvo el estado a false "para resetear" y vacío su contenido
+      onSearch(searchTerm); // Su comp padre decide qué tiene que hacer
       setSubmit(false);
-      setSearchTerm("");
+    } catch (error: any) {
+      setSubmit(false);
+      throw new Error(error.message);
     }
   };
 
@@ -93,7 +97,6 @@ export default function Search({
           type="text"
           value={searchTerm}
           onChange={handleChange}
-          onBlur={(e) => setSearchTerm("")} // Evita mantener el término introducido si no se hizo onSubmit
           placeholder={placeholder}
           className={styles["search__input"]}
           aria-label={placeholder}
