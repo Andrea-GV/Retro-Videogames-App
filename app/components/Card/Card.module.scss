@@ -60,9 +60,10 @@
     margin-top: 0.5rem;
     color: #ffb45d;
 
-    &::after {
-      margin-left: 0.5rem;
-      content: "⭐";
-    }
+    // TODO: Modo estrellas: que aparezcan un max 5 en función de su rating
+    // &::after {
+    //   margin-left: 0.5rem;
+    //   content: "⭐";
+    // }
   }
 }
