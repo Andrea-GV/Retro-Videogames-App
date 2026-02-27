@@ -59,11 +59,23 @@
     font-size: 0.8rem;
     margin-top: 0.5rem;
     color: #ffb45d;
+    display: flex;
+    gap: 0.5rem;
 
     // TODO: Modo estrellas: que aparezcan un max 5 en función de su rating
     // &::after {
     //   margin-left: 0.5rem;
     //   content: "⭐";
     // }
+  }
+}
+.stars {
+  display: flex;
+
+  img {
+    height: 12px;
+  }
+  &__half-star {
+    width: 6px;
   }
 }

@@ -11,7 +11,6 @@ import ButtonAction from "../../ButtonAction/ButtonAction";
 import { GameCard } from "../../Card/Card";
 import { Select } from "../../Select/Select";
 import styles from "./GamesList.module.scss";
-import { start } from "repl";
 
 type GameListProps = {
   data: Game[];
@@ -33,16 +32,17 @@ const publisherOpts: { label: string; value: string }[] = [
 ];
 
 const ratingOpts: { label: string; value: string }[] = [
-  { label: "1 ⭐️", value: "7" },
-  // { label: "2 ⭐️⭐️", value: "2" },
-  // { label: "3 ⭐️⭐️⭐️", value: "3" },
-  // { label: "4 ⭐️⭐️⭐️⭐️", value: "4" },
-  // { label: "5 ⭐️⭐️⭐️⭐️⭐️", value: "5" },
-  // { label: "6", value: "6" },
-  // { label: "7", value: "7" },
-  // { label: "8", value: "8" },
-  // { label: "9", value: "9" },
-  // { label: "10", value: "10" },
+  { label: "Mejor olvídalo (0 ⭐️)", value: "0" },
+  { label: "Infumable (1 ⭐️)", value: "1" },
+  { label: "Muy malo (2 ⭐️)", value: "2" },
+  { label: "Malo (3 ⭐️)", value: "3" },
+  { label: "Entretiene (4 ⭐️)", value: "4" },
+  { label: "Funcional (5 ⭐️)", value: "5" },
+  { label: "Normalito (6 ⭐️)", value: "6" },
+  { label: "Mejorable (7 ⭐️)", value: "7" },
+  { label: "Excelente (8 ⭐️)", value: "8" },
+  { label: "Flipas! (9 ⭐️)", value: "9" },
+  { label: "Fucking awesome (10 ⭐️)", value: "10" },
 ];
 
 export const GamesList = ({ data }: GameListProps) => {
@@ -72,7 +72,6 @@ export const GamesList = ({ data }: GameListProps) => {
   const filterGames = () => {
     // Recojo todos los juegos y luego aplicaré filtros
     let results = data;
-    console.log(results);
     // Publisher (si hay seleccionado)
     if (selectedPublisher.length > 0) {
       results = results.filter((game) => {
@@ -83,34 +82,22 @@ export const GamesList = ({ data }: GameListProps) => {
     }
 
     // Rating
-    /* Qué necesito hacer para poder comparar los rating:
-      0. Que sean formato Num selectedRating y game.rating
-    1. Creo un array para ir llenándolo con los juegos que tengan rating q coincida (se llene en el bucle)
-    2. Si se selecciona el filtro de Rating:
-    3. Que empiece a recorrer todos los juegos q traiga results
-    - Si son null, que pasen al siguiente
-    - Si son formato string --> que convierta y almacene su rating a Number 
-    4. Compara su rating con el seleccionado del Select 
-      --> POR RANGO 7-7.9 >= 7
-      - Si son iguales, que guarde el juego en el array
-      - Devuelva
-     */
-    let gamesWithRating: Game[] = []; // 1.
+    let gamesWithRating: Game[] = []; // 1. Array x llnar con juegos q tengan rating q coincida
+    //  2. Si se selecciona el filtro de Rating:
     if (selectedRating !== null) {
-      // 2.
-      const numbSelectedRating = Number(selectedRating); // 0. transformo a Numb
+      const numbSelectedRating = Number(selectedRating); //  transformo a Numb
       console.log("⭐️ numbSelectedRating", numbSelectedRating);
 
+      // 3. Recorro juegos
       results = results.filter((game) => {
-        // 3.
+        // 3.1 -> Null --> Next Game
         if (game.rating === null) {
-          // 3.1
           console.log("❌ No hay rating, next game", game);
           return false;
         }
-
+        // - Si son formato string --> que convierta y almacene su rating a Number
         const numbRatingData =
-          typeof game.rating === "string" ? Number(game.rating) : game.rating; // 0. Transformo
+          typeof game.rating === "string" ? Number(game.rating) : game.rating; //  Transformo a Numb
         console.log("Rating CONVERTIDO", numbRatingData, typeof numbRatingData);
 
         // 4. Comparo valores POR RANGO
@@ -125,6 +112,7 @@ export const GamesList = ({ data }: GameListProps) => {
           numbRatingData,
           numbSelectedRating,
         );
+        // Si son iguales, guarda el juego
         if (matchesRating) {
           gamesWithRating.push(game);
         }
@@ -154,12 +142,17 @@ export const GamesList = ({ data }: GameListProps) => {
     setShouldClear(false);
   };
 
-  // BORRADO
+  // ** BORRADO **
   // Borra el Publisher
   const handleClearPublisher = (publisherId: string) => {
     // setSelectedPublisher(null); // <-- un P
     const deleteId = selectedPublisher.filter((id) => id !== publisherId);
     setSelectedPublisher((prev) => prev.filter((id) => id !== publisherId));
+  };
+
+  // Borra rating
+  const handleClearRating = () => {
+    setSelectedRating(null);
   };
 
   // Borra el input
@@ -173,10 +166,11 @@ export const GamesList = ({ data }: GameListProps) => {
     // setSelectedPublisher(null); // <---- SELECT al placeholder después de borrar
     setSelectedPublisher([]); // <-- Varios P
     setSearchTerm(""); // NEcesito resetearlo. Sino, aunque pulse, se queda 1 vez
+    setSelectedRating(null);
     setShouldClear(true);
   };
 
-  // CAMBIOS
+  // ** CAMBIOS **
   // Cambio en Search (name)
   const handleGamesByName = async (name: string) => {
     setSearchTerm(name);
@@ -186,7 +180,6 @@ export const GamesList = ({ data }: GameListProps) => {
   const handlePublisherChange = async (value: string | number) => {
     console.log("Publisher seleccionado:", value);
     const publisherId = value as string;
-    console.log("publisherId", publisherId);
     // ⚠️ Cuando solo podía seleccionar UN publisher tenía ⬇️
     // setSelectedPublisher(publisherId);
 
@@ -196,14 +189,12 @@ export const GamesList = ({ data }: GameListProps) => {
     }
     // VARIOS: Añado a la lista. Creo copia y añado el selected por su id
     setSelectedPublisher((prev) => [...prev, publisherId]);
-    console.log("🟢 selectedPublisher after filter", selectedPublisher);
   };
 
   // Cambio Select rating
   const handleRatingChange = async (value: string | number) => {
     // ⚠️ El rating de un game viene como string
     setSelectedRating(value as string);
-    console.log("selectedRating", selectedRating);
   };
 
   // Los chips de publisher
@@ -225,7 +216,7 @@ export const GamesList = ({ data }: GameListProps) => {
           <Select
             name="rating"
             options={ratingOpts}
-            placeholder="Filtrar por rating"
+            placeholder="Filtrar por valoracion"
             onChange={handleRatingChange}
           />
           <Search
@@ -261,7 +252,20 @@ export const GamesList = ({ data }: GameListProps) => {
               />
             </span>
           ))}
-          {/* Chips término */}
+          {/* Chip rating */}
+          {selectedRating && (
+            <span className={styles["games__chip"]}>
+              Rating range {selectedRating}
+              <ButtonAction
+                variant="close-red"
+                size="xsmall"
+                icon="close-red"
+                onClick={handleClearRating}
+                ariaLabel="Elimina filtro de rating"
+              />
+            </span>
+          )}
+          {/* Chip término */}
           {searchTerm && (
             <span className={styles["games__chip"]}>
               "{searchTerm}"
@@ -305,6 +309,7 @@ export const GamesList = ({ data }: GameListProps) => {
               {selectedPublisher.map((publisherId) => (
                 <strong> "{selectedPublisherChip(publisherId)}"</strong>
               ))}
+              {selectedRating && <strong> Rating: {selectedRating}</strong>}
             </p>
           ) : (
             <section className={styles["games__grid"]}>
