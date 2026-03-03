@@ -68,13 +68,19 @@ export const Card = ({
         )}
         {rating && (
           <div className={styles["card__rating"]}>
-            <p>{rating}</p>
             <Stars rating={rating} max={5} />
+            <p>({rating})</p>
           </div>
         )}
       </div>
 
       <div className={styles["card__btn-wrapper"]}>
+        {/* TODO: Este botón debería llvar al formulario para editar el juego*/}
+        <ButtonArrow
+          variant="edit"
+          size="small"
+          href={`/games/edit-game/${id}`}
+        />
         <ButtonArrow
           children="Ver mas"
           href={`/games/${id}`}
@@ -123,11 +129,9 @@ export function Stars({ rating, max = 5 }: StarsProps) {
     hasHalfStar = true;
   }
 
-  // const empty = max - fullStars - (hasHalfStar ? 1 : 0);
-
   return (
     <div className={styles.stars}>
-      {/* Par  */}
+      {/* Par --> Mapeo Array y asigno img a cada elem. "_", irrelevante su valor del index )  */}
       {Array.from({ length: fullStars }).map((_, i) => (
         <img key={`full-${i}`} src="/icons/star-full.svg" alt="star" />
       ))}

@@ -19,9 +19,10 @@ type FormInputTextPops = {
   type?: FormControlInputTextType;
   rules?: object; //   Para usar rules (required, max-min length...)
   className?: string;
+  step?: string;
 };
 export const FormInputText = (props: FormInputTextPops) => {
-  const { name, label, placeholder, type, rules, className } = props;
+  const { name, label, placeholder, type, rules, className, step } = props;
 
   //   Accedo al contexto del form y a sus errores
   const {

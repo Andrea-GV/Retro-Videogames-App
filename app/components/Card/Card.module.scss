@@ -26,6 +26,8 @@
     margin-top: 1rem;
     width: auto;
     float: right;
+    display: flex;
+    gap: 0.5rem;
   }
 
   &__title {
@@ -61,12 +63,6 @@
     color: #ffb45d;
     display: flex;
     gap: 0.5rem;
-
-    // TODO: Modo estrellas: que aparezcan un max 5 en función de su rating
-    // &::after {
-    //   margin-left: 0.5rem;
-    //   content: "⭐";
-    // }
   }
 }
 .stars {

@@ -1,0 +1,14 @@
+.form {
+  &__body {
+    padding: 1rem 0;
+    width: 65%;
+    justify-self: center;
+  }
+  &__btns {
+    padding: 1rem 0;
+    justify-self: flex-end;
+    margin-right: 20%;
+    display: flex;
+    gap: 1rem;
+  }
+}

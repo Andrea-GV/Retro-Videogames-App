@@ -3,6 +3,9 @@
   src: url("/fonts/ARCADE_DOT.TTF") format("truetype");
   font-display: swap; // El browser pre-carga la fuente y mejora render
 }
+:root {
+  --icon-edit: url("/icons/edit.svg");
+}
 .button {
   display: inline-flex;
   align-items: center;
@@ -66,7 +69,6 @@
   }
   &--link {
     background-color: #ffb45d;
-
     border: 2px solid #ffb45d;
     color: #1a1a1a;
     &:hover {
@@ -74,6 +76,37 @@
       color: #f18f49;
       box-shadow: 0 6px 20px rgba(255, 190, 77, 0.4);
     }
+  }
+
+  &--edit {
+    background-color: rgba(241, 154, 73, 0.1);
+    border: 2px solid #f1a349;
+    color: #f18f49;
+
+    &::before {
+      content: "";
+      display: inline-block;
+      width: 15px;
+      height: 15px;
+      background-image: var(--icon-edit);
+      background-repeat: no-repeat;
+      background-size: contain;
+      background-position: center;
+      flex-shrink: 0;
+    }
+
+    &:hover {
+      background-color: #f1a349;
+      color: #1a1a1a;
+      box-shadow: 0 6px 20px rgba(241, 154, 73, 0.4);
+    }
+  }
+  // Icon
+  &--icon-only {
+    padding: 0.5rem;
+    gap: 0;
+    width: auto;
+    height: auto;
   }
 
   // Tamaños
@@ -113,4 +146,7 @@
       height: 24px;
     }
   }
+}
+.button--icon--edit .button--icon {
+  background-image: var(--icon-edit);
 }

@@ -172,12 +172,12 @@ export const GamesList = ({ data }: GameListProps) => {
 
   // ** CAMBIOS **
   // Cambio en Search (name)
-  const handleGamesByName = async (name: string) => {
+  const handleGamesByName = (name: string) => {
     setSearchTerm(name);
   };
 
   // Cambio Select de publisher
-  const handlePublisherChange = async (value: string | number) => {
+  const handlePublisherChange = (value: string | number) => {
     console.log("Publisher seleccionado:", value);
     const publisherId = value as string;
     // ⚠️ Cuando solo podía seleccionar UN publisher tenía ⬇️
@@ -192,7 +192,7 @@ export const GamesList = ({ data }: GameListProps) => {
   };
 
   // Cambio Select rating
-  const handleRatingChange = async (value: string | number) => {
+  const handleRatingChange = (value: string | number) => {
     // ⚠️ El rating de un game viene como string
     setSelectedRating(value as string);
   };

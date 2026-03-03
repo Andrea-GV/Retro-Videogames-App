@@ -1,0 +1,34 @@
+// Esta hoja de estilos es para iniciar. Después haré layout y compontents más reutilizables
+
+@font-face {
+  font-family: "ArcadeItalicBars";
+  src: url("/fonts/ARCADE_I.TTF") format("truetype");
+  font-display: swap; // El browser pre-carga la fuente y mejora render
+}
+@font-face {
+  font-family: "ArcadeMinusDotted";
+  src: url("/fonts/ARCADE_DOT.TTF") format("truetype");
+  font-display: swap;
+}
+.button__container {
+  margin: 1.2rem 6rem;
+  align-items: center;
+  display: flex;
+  gap: 16px;
+  // justify-content: space-around;
+}
+.game {
+  &__container {
+    margin: 5rem auto;
+    padding: 2rem;
+    width: 90%;
+  }
+  &__title {
+    font-size: 2.5rem;
+    margin-bottom: 3rem;
+    text-align: center;
+    font-family: "ArcadeItalicBars";
+    color: #444343;
+    text-shadow: 2px 2px 0 #2fce71;
+  }
+}

@@ -53,7 +53,7 @@ export default async function Games() {
       ));
   }
 
-  /* TODO: 
+  /* TODO: Paginación
     - Que se muestre un máx de 12 juegos / pag
       --> Paginación para mostrarlos
       --> Usar btn volver + siguiente 

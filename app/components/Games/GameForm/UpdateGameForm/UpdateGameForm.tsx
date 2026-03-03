@@ -1,60 +1,37 @@
-// Este componente es específico para Game --> De momento para CREAR
 "use client";
 
 // import { useState } from "react"; // --> Loading? --> Ya lo hago con isSubmitting
 import { useForm, FormProvider } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import baseURL from "@/app/lib/baseURL";
-import { CreateGame } from "@/app/models/game";
+import { Game, UpdateGame } from "@/app/models/game";
 import Form from "@/app/components/Form/Form";
 import { FormInputText } from "@/app/components/FormInputText/FormInputText";
 import { FormInputSelect } from "@/app/components/FormInputSelect/FormInputSelect";
 import ButtonAction from "@/app/components/ButtonAction/ButtonAction";
-
-import styles from "./CreateGameForm.module.scss";
-
-// Su model -- Inputs que necesito
-//  ✅ name: string; // ⚠️ El único campo not null --> Por lo que debería tener un rules required
-//   release_date?: string; --> Input tipo date
-//  ✅ players_num?: number;
-//  ✅ cover_url?: string;
-//   rating?: number; --> Radio con ⭐️ ?
-//   id_publisher?: number; --> Selector para poder elegirlos?
+import styles from "./UpateGameForm.module.scss";
 
 /*      INFORMACIÓN RELEVANTE
-Este componente es Client se encarga de ** recoger la info ** (estado de cada campo, validaciones, etc)
-Envuelvo el Form completo en un FormProvider para que los hijos puedan recoger la info
-     --> El FormProvider sería más en el Comp Form, que en este ..?
-        Creo que no, porque quien sabe qué info le hace falta (siguiendo el model de CreateGame) es el comp CreateGameForm
-        El Form es genérico y no sabe qué datos recogerá
-        --> Lo pruebo aquí y apunto deducciones
-
 El ** fetch a la api ** debería hacerlo este componente al hacer onSubmit
     - ⚠️ Después del fetch, debería redirigir a la lista de tods los games?
     - click en CANCELAR -> redirigir a lista de games
         --> ⚠️ Por lo que hace falta useRouter de next
 */
+type UpdateGameFormProps = {
+  game: Game; // <-- Recibe el juego con sus datos
+};
 
-export default function CreateGameForm() {
-  //   const [formValues, setFormValues] = useState<CreateGame>({ <---  ❌ Lo cambio por el useForm
-  //     name: "",     // ℹ️ Inicializo en vacío todo
-  //     release_date: "",
-  //     players_num: undefined,
-  //     cover_url: "",
-  //     rating: undefined,
-  //     id_publisher: undefined,
-  //   });
+export default function UpdateGameForm({ game }: UpdateGameFormProps) {
   const router = useRouter();
-  const methods = useForm<CreateGame>({
-    // Necesita saber qué tipo de datos usando su model
-    // ℹ️ Inicializo en vacío todo
+  const methods = useForm<UpdateGame>({
+    // ℹ️ Traigo los datos que sí tiene rellenos del Game
     defaultValues: {
-      name: "",
-      release_date: "",
-      players_num: undefined,
-      cover_url: "",
-      rating: undefined,
-      id_publisher: undefined,
+      name: game.name,
+      release_date: game.release_date || "",
+      players_num: game.players_num || undefined,
+      cover_url: game.cover_url || "",
+      rating: game.rating || undefined,
+      id_publisher: game.id_publisher || undefined,
     },
     mode: "onChange", // valida al typing
   });
@@ -79,15 +56,6 @@ export default function CreateGameForm() {
   ];
 
   // ** FUNCIONES **
-  /* con useForm mode:onchange --> handleChange ya no hace falta
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        console.log("typing");
-    ⚠️ DE MOMENTO REGISTRA TODS Los inputs A LA VEZ
-    setInputValue(e.target.value);
-    console.log(inputValue);
-      };
-    */
-
   // console.log("Methods:", methods);
   //   Methods me interesa:
   //      handleSubmit --> f
@@ -95,18 +63,23 @@ export default function CreateGameForm() {
   //      formState con sus propiedade: isSubmitting & errors ¿?
   //   Algo más?
   //    --> ℹ️ Control tiene el disable para el botón
+
+  // ⚠️🚩 2-MARZO ---> Lo dejo por aquí, la info viene precargada la data del Game
+  // Al querer actualizar un campo ME EXIGE que toque todos, me ha ido dando diferentes errores si no le metía date, etc
+  //  ********** REVISAR DESDE AQUÍ:**************
   const {
     handleSubmit,
     formState: { isSubmitting, errors },
   } = methods;
 
-  //   Debería enviar la data de CreateGame al back
-  const onSubmit = async (data: CreateGame) => {
+  //   Debería enviar la data de UpdateGame al back
+  const onSubmit = async (data: UpdateGame) => {
     console.log("🟢 Guardando?", data);
     // Hará el FETCH aquí
     try {
-      const response = await fetch(`${baseURL}/games`, {
-        method: "POST",
+      console.log("URL DEL FETCH", `${baseURL}/games/${game.id_game}`);
+      const response = await fetch(`${baseURL}/games/${game.id_game}`, {
+        method: "PATCH",
         headers: {
           "Content-Type": "application/json",
         },
@@ -117,18 +90,20 @@ export default function CreateGameForm() {
 
       if (!response.ok) {
         const errorData = await response.json();
+        console.log("ERROR DATA", errorData);
         throw new Error(
-          (errorData.error && errorData.message) || "Error creando el juego.",
+          (errorData.error && errorData.message) ||
+            "Error al actualizar el juego.",
         );
       }
 
       // Guardo el resultado
-      const newGame = await response.json();
-      console.log("NEW GAME", newGame);
+      const updatedGame = await response.json();
+      console.log("EDITED GAME", updatedGame);
       // Ahora que está ok, puedo redirigir a la pag de games o ... a la del juego creado
-      router.push(`/games/${newGame.id_game}`);
+      router.push(`/games/${game.id_game}`);
     } catch (err: any) {
-      console.error("Error al cargar el juego:", err);
+      console.error("Error:", err);
       // TODO: Debería manejar los diferentes errores que puede dar?
       return (
         <div>
@@ -144,7 +119,7 @@ export default function CreateGameForm() {
     // confirm(); // que el user confirme
     // Si le doy a cancelar - cancelar igualmente redirije asi que... condicional?
     if (confirm("Seguro que quieres cancelar? Se perderá el progreso")) {
-      router.push("/games"); // le redirijo
+      router.push("/games"); // le redirijo a pág genérica
     }
   };
 
@@ -207,6 +182,7 @@ export default function CreateGameForm() {
             name="rating"
             label="Valora el juego"
             type="number"
+            step="0.1"
             placeholder="p. ej 8.5"
             className="rating"
             rules={{
@@ -218,8 +194,37 @@ export default function CreateGameForm() {
                 value: 0,
                 message: "El rating debe estar entre 0 y 10",
               },
+              pattern: {
+                value: /^\d*\.?\d*$/, ///^[0-9]+(\.[0-9])?$/,
+                message: "El rating debe ser un número decimal válido",
+              },
             }}
           />
+          {/* Prueba para que acepte decimales: Aplicar validación */}
+          {/* <FormInputText
+            name="rating"
+            label="Valora el juego"
+            type="text"
+            inputMode="decimal"
+            placeholder="p. ej 8.5"
+            className="rating"
+            rules={{
+              pattern: {
+                value: /^(\d+\.?\d*)?$/,
+                message: "El rating debe ser un número decimal válido",
+              },
+              validate: {
+                isValidRange: (value) => {
+                  if (!value) return true;
+                  const num = parseFloat(value);
+                  if (isNaN(num)) return "Debe ser un número";
+                  if (num < 0 || num > 10)
+                    return "El rating debe estar entre 0 y 10";
+                  return true;
+                },
+              },
+            }}
+          /> */}
         </div>
 
         {/* Footer para botones: Cancelar / Submit */}
