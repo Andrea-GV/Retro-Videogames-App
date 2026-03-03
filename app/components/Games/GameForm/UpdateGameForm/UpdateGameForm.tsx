@@ -115,7 +115,6 @@ export default function UpdateGameForm({ game }: UpdateGameFormProps) {
   };
 
   const handleCancel = async () => {
-    console.log("🟡 Borrando");
     // confirm(); // que el user confirme
     // Si le doy a cancelar - cancelar igualmente redirije asi que... condicional?
     if (confirm("Seguro que quieres cancelar? Se perderá el progreso")) {
@@ -181,40 +180,17 @@ export default function UpdateGameForm({ game }: UpdateGameFormProps) {
           <FormInputText
             name="rating"
             label="Valora el juego"
-            type="number"
-            step="0.1"
-            placeholder="p. ej 8.5"
-            className="rating"
-            rules={{
-              max: {
-                value: 10,
-                message: "El rating debe estar entre 0 y 10",
-              },
-              min: {
-                value: 0,
-                message: "El rating debe estar entre 0 y 10",
-              },
-              pattern: {
-                value: /^\d*\.?\d*$/, ///^[0-9]+(\.[0-9])?$/,
-                message: "El rating debe ser un número decimal válido",
-              },
-            }}
-          />
-          {/* Prueba para que acepte decimales: Aplicar validación */}
-          {/* <FormInputText
-            name="rating"
-            label="Valora el juego"
             type="text"
-            inputMode="decimal"
             placeholder="p. ej 8.5"
             className="rating"
+            inputMode="decimal"
             rules={{
               pattern: {
                 value: /^(\d+\.?\d*)?$/,
                 message: "El rating debe ser un número decimal válido",
               },
               validate: {
-                isValidRange: (value) => {
+                isValidRange: (value: string) => {
                   if (!value) return true;
                   const num = parseFloat(value);
                   if (isNaN(num)) return "Debe ser un número";
@@ -224,7 +200,7 @@ export default function UpdateGameForm({ game }: UpdateGameFormProps) {
                 },
               },
             }}
-          /> */}
+          />
         </div>
 
         {/* Footer para botones: Cancelar / Submit */}

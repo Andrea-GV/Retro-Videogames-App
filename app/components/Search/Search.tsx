@@ -67,6 +67,8 @@ export default function Search({
     }
   }, [shouldClear]);
 
+  // TODO: Aplicar onChange cancela onSubmit. Revisar funcionalidad?
+  // TODO: Al hacer focus, debería eliminar botón lupa y aparecer botón X para eliminar búsqueda
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 

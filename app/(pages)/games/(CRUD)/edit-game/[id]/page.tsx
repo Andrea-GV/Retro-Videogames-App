@@ -58,7 +58,6 @@ export default async function EditGamePage({ params }: PageProps) {
       </div>
       <div className={styles["game__container"]}>
         <h1 className={styles["game__title"]}>Edita el videojuego</h1>
-        {/* TODO: Hacer el componente Edit que reciba por prop la data del juego*/}
         <UpdateGameForm game={game} />
       </div>
     </div>
