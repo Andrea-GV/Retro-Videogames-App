@@ -1,0 +1,151 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ** Tablas Base (N:1) **
+
+model Publisher{
+  id_publisher Int @id @default(autoincrement()) @map("id_publisher")
+  name String @unique @db.VarChar(100)
+  country String? @db.VarChar(50)
+
+  // Relación (inversa) tabla game
+  games Game[] // <--  Un Publisher puede tener varios games (games -- tabla Game [])
+
+  @@map("publishers") // <-- Nombre de tabla
+}
+
+model Game {
+  id_game Int @id @default(autoincrement()) @map("id_game")
+  name String @unique @db.VarChar(200)
+  release_date DateTime? @db.Date
+  players_num Int? @db.SmallInt
+  cover_url String? @db.VarChar(300)
+  rating Decimal? @db.Decimal(3,1)
+  id_publisher Int? @map("id_publisher")
+
+/* Relación:
+publisher              Publisher?     @relation(  fields: [id_publisher], references: [id_publisher], onDelete: SetNull  )
+nombre campo en Prisma| modelo al que apunta | columna en ESTA tabla | columna en la tabla Publisher | Borrado: lo Setea a Null
+*/
+
+  // Relación tablas --> publisher (inversa) & Intermedias: genres, platforms, shops y libraries
+  publisher Publisher? @relation(fields: [id_publisher], references: [id_publisher], onDelete: SetNull)
+  genres GameGenre[]
+  platforms GamePlatform[]
+  shops GameShop[]
+  libraries Library[]
+
+  @@map("games")
+}
+
+model Genre{
+  id_genre Int @id @default(autoincrement()) @map("id_genre")
+  name String @unique @db.VarChar(60)
+
+  // Relación tabla intermedia GameGenre
+  games GameGenre[]
+
+  @@map("genres")
+}
+
+model Platform{
+  id_platform Int @id @default(autoincrement()) @map("id_platform")
+  name String @unique @db.VarChar(100)
+
+  // Relación tabla intermedia GamePlatform
+  games GamePlatform[]
+
+  @@map("platforms")
+}
+
+model Shop{
+  id_shop Int @id @default(autoincrement()) @map("id_shop")
+  name String @unique @db.VarChar(100)
+  url_web String @unique @db.VarChar(200)
+
+  // Relación tabla intermedia GameShop
+  games GameShop[]
+
+  @@map("shops")
+}
+
+model User{
+  id_user Int @id @default(autoincrement()) @map("id_user")
+  username String @unique @db.VarChar(50)
+  email String @unique @db.VarChar(250) 
+  password String @db.VarChar(255)
+
+// Relación tabla library
+  library Library[]
+
+  @@map("users")
+}
+
+// ** Tablas intermedias (N:M) **
+
+model Library {
+  id_user Int
+  id_game Int
+  buy_date DateTime?  @default(now()) @db.Date
+  played_hours Int? @default(0)
+  status String? @default("pending") @db.VarChar(20)
+  personal_rating Int?
+
+  // Relación tablas user - game
+  user User @relation(fields:[id_user], references:[id_user], onDelete: Cascade)
+  game Game @relation(fields:[id_game], references:[id_game], onDelete:Cascade)
+
+  @@id ([id_user, id_game]) // PK conjunta
+  @@map("library")
+
+}
+
+model GameGenre{
+  id_game Int
+  id_genre Int
+
+  // Relación tablas game - genre
+  game Game @relation(fields:[id_game], references: [id_game], onDelete: Cascade)
+  genre Genre @relation(fields:[id_genre], references:[id_genre], onDelete: Cascade)
+  
+  @@id([id_game, id_genre])
+  @@map("games_genres")
+}
+
+model GamePlatform{
+  id_game Int
+  id_platform Int
+
+  // Relación tablas game - platform
+  game Game @relation(fields:[id_game], references:[id_game], onDelete: Cascade)
+  platform Platform @relation(fields:[id_platform], references:[id_platform], onDelete: Cascade)
+
+  @@id([id_game, id_platform])
+  @@map("games_platforms")
+}
+
+model GameShop{
+  id_game Int
+  id_shop Int
+  price Decimal @db.Decimal(5,2)
+  in_stock Boolean? @default(true)
+
+  // Relación tablas game - shop
+  game Game @relation(fields:[id_game], references:[id_game], onDelete: Cascade)
+  shop Shop @relation(fields:[id_shop], references:[id_shop], onDelete:Cascade)
+
+  @@id([id_game, id_shop])
+  @@map("games_shops")
+}

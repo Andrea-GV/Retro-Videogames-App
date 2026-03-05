@@ -32,17 +32,12 @@ export default async function EditGamePage({ params }: PageProps) {
     game = await response.json();
   } catch (err: any) {
     error = err.message;
-    console.error("Error al cargar el juego:", error);
-    return (
-      <div>
-        <h1>Ups, ha habido un error</h1>
-        <p>{error}</p>
-      </div>
-    );
   }
+
   if (error || !game) {
     return (
       <div className="error__container">
+        <h3>Ups, ha habido un error</h3>
         <p>No se pudo cargar el juego:</p>
         <p>{error}</p>
       </div>

@@ -39,7 +39,6 @@ CREATE TABLE users (
     username VARCHAR(50) UNIQUE NOT NULL,
     email VARCHAR(250) UNIQUE NOT NULL CONSTRAINT chk_email_pattern CHECK (email LIKE '%@%.%'),
     password VARCHAR(255) NOT NULL
-
 );
 
 CREATE TABLE library (

@@ -209,7 +209,7 @@ export default function UpdateGameForm({ game }: UpdateGameFormProps) {
             text="Cancelar"
             variant="cancel"
             size="medium"
-            ariaLabel="Botón cancelar crear videojuego"
+            ariaLabel="Botón cancelar edición del videojuego"
             onClick={handleCancel}
             disabled={isSubmitting}
           />
