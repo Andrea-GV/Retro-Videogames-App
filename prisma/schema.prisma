@@ -36,7 +36,7 @@ model Game {
   id_publisher Int? @map("id_publisher")
 
 /* Relación:
-publisher              Publisher?     @relation(  fields: [id_publisher], references: [id_publisher], onDelete: SetNull  )
+publisher              Publisher?   @relation(  fields: [id_publisher], references: [id_publisher],   onDelete: SetNull  )
 nombre campo en Prisma| modelo al que apunta | columna en ESTA tabla | columna en la tabla Publisher | Borrado: lo Setea a Null
 */
 

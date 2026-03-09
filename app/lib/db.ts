@@ -1,5 +1,10 @@
 import { Pool } from "pg";
 
+/* *** ACTUALZACIÓN: ***
+  Este archivo era original cuando usaba la Base de datos de Postgres con Cliente de pg.
+  Al crear las migraciones y usar  🟡 Prisma, el archivo originl no quise perderlo PERO ya NO SE USA
+*/
+
 /* En vez de crear una conexión por cada query , voy a crear un Pool de conexiones reutilizable 
 Así, sólo lo creo una vez y lo reutilizo en toda la app
 https://node-postgres.com/features/connecting
