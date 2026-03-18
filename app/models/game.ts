@@ -1,5 +1,11 @@
 import { Decimal } from "@prisma/client/runtime/client";
 
+export interface Publisher {
+  id_publisher: number;
+  name?: string;
+  country?: string;
+}
+
 // Construyo la interfaz usando los campos de la tabla
 export interface Game {
   id_game: number;
@@ -7,9 +13,9 @@ export interface Game {
   release_date: Date | null; // con pg -> string | null
   players_num: number | null;
   cover_url: string | null;
-  rating: Decimal | null;
+  rating: number | null; // Espera un Num, pero Prisma espera Decimal
   id_publisher: number | null;
-  publisher_name?: string; // Este campo no lo tengo en la tabla pero podría ser más útil que el id para mostrar en el Front
+  publisher?: Publisher | null;
 }
 
 export interface CreateGame {

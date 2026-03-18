@@ -1,7 +1,7 @@
 /* *** ACTUALZACIÓN: ***
   Este archivo contiene el nuevo Cliente usando Prisma, el archivo original (db.ts) ya NO SE USA    */
 // import "dotenv/config"; // <-- No tengo claro si me hace falta
-import { PrismaClient, Prisma } from "../generated/prisma/client";
+import { PrismaClient } from "../generated/prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg"; // v7^ necesita obligatorio Adapter
 
 const connectionString = `${process.env.DATABASE_URL}`;

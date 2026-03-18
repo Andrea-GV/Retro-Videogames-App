@@ -27,9 +27,9 @@ export default function UpdateGameForm({ game }: UpdateGameFormProps) {
     // ℹ️ Traigo los datos que sí tiene rellenos del Game
     defaultValues: {
       name: game.name,
-      release_date: game.release_date || "",
+      release_date: game.release_date || undefined,
       players_num: game.players_num || undefined,
-      cover_url: game.cover_url || "",
+      cover_url: game.cover_url || undefined,
       rating: game.rating || undefined,
       id_publisher: game.id_publisher || undefined,
     },
@@ -64,7 +64,7 @@ export default function UpdateGameForm({ game }: UpdateGameFormProps) {
   //   Algo más?
   //    --> ℹ️ Control tiene el disable para el botón
 
-  // ⚠️🚩 2-MARZO ---> Lo dejo por aquí, la info viene precargada la data del Game
+  // ⚠️🚩---> Lo dejo por aquí, la info viene precargada la data del Game
   // Al querer actualizar un campo ME EXIGE que toque todos, me ha ido dando diferentes errores si no le metía date, etc
   //  ********** REVISAR DESDE AQUÍ:**************
   const {
@@ -75,10 +75,16 @@ export default function UpdateGameForm({ game }: UpdateGameFormProps) {
   //   Debería enviar la data de UpdateGame al back
   const onSubmit = async (data: UpdateGame) => {
     console.log("🟢 Guardando?", data);
+
+    // ❓17 MARZO - DUDA. Por qué necesito revisar campos vacíos (de nuevo) asi lo hice cuando usaba pg en su backend. comprobar si se habían cambiado los valores
+    // Para eliminar el error de campos vacíos, debería limpiar y revisar si hay un campo "" ?
+    if (data) {
+      console.log("DATA VIENE", data);
+    }
     // Hará el FETCH aquí
     try {
-      console.log("URL DEL FETCH", `${baseURL}/games/${game.id_game}`);
-      const response = await fetch(`${baseURL}/games/${game.id_game}`, {
+      console.log("URL DEL FETCH", `${baseURL}games/${game.id_game}`);
+      const response = await fetch(`${baseURL}games/${game.id_game}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",

@@ -27,8 +27,6 @@ export const Card = ({
   releaseDate,
   rating,
 }: CardProps) => {
-  //   console.log("DATOS EN CARD", id);
-
   return (
     <div className={styles["card"]}>
       {image ? (
@@ -44,7 +42,7 @@ export const Card = ({
         {title && <h2 className={styles["card__title"]}>{title}</h2>}
         {publisher && (
           <div className={styles["card__publisher"]}>
-            <p>Plubished by </p>
+            <p>Published by </p>
             {publisher === "Atari" ? (
               <h4
                 className={
@@ -87,7 +85,7 @@ export const Card = ({
           variant="forward"
           size="small"
           className={btnStyles["button--forward"]}
-        ></ButtonArrow>
+        />
       </div>
     </div>
   );
@@ -96,12 +94,15 @@ export const Card = ({
 // TODO: Cuando haga publishers, shops etc, crearé sus componentes PublisherCard
 // ⚠️ GameCard recibe el obj game de su mapeo en GameList y le pasa a Card los datos que quiere mostrar como props
 export function GameCard({ data }: { data: Game }) {
+  console.log(data);
+
   return (
     <Card
       id={data.id_game}
       image={data.cover_url}
       title={data.name}
-      publisher={data.publisher_name}
+      // publisher={data.publisher_name}
+      publisher={data.publisher?.name}
       rating={data.rating}
     />
   );

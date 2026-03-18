@@ -1,7 +1,6 @@
 import { Game } from "@/app/models/game";
 import baseURL from "@/app/lib/baseURL";
 import styles from "./Games.module.scss";
-// import Search from "@/app/components/Search/Search";
 import { GamesList } from "@/app/components/Games/GamesList/GamesList";
 
 export default async function Games() {

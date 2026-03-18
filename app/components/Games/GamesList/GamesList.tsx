@@ -1,6 +1,5 @@
 // Se crea este archivo para que reciba por prop el array de datos de juegos y poder utilizar el Search
 // Debido al error previo que no se puede enviar funciones de un server a client component
-
 "use client";
 
 import { useEffect, useState } from "react";
@@ -53,7 +52,7 @@ export const GamesList = ({ data }: GameListProps) => {
   const [selectedPublisher, setSelectedPublisher] = useState<string[]>([]); // Lo cambio de string a string[]  y quito null para poder seleccionar varios publisher
   // const [selectedRating, setSelectedRating] = useState<string | null>(null); // Filtro por rating
   const [selectedRating, setSelectedRating] = useState<string[]>([]); // Prueba para VARIOS rating
-
+  // console.log("DATA EN GAMELIST", data);
   // ❓ USar un useEffect para escuchar searchTerm y que renderice filteredGames según typing
   // Ahora DISPARA la función de filtrado en función de si cambia alguna de sus dependencias a vigilar
   useEffect(() => {
@@ -87,7 +86,6 @@ export const GamesList = ({ data }: GameListProps) => {
         const numbSelectedRating = Number(rating);
         // const numbSelectedRating = Number(selectedRating); //  transformo a Numb
         // 3. Recorro juegos
-        // results = results.filter((game) => {
         results.filter((game) => {
           // 3.1 -> Null --> Next Game
           if (game.rating === null) {
@@ -96,13 +94,13 @@ export const GamesList = ({ data }: GameListProps) => {
           // - Si son formato string --> que convierta y almacene su rating a Number
           const numbRatingData =
             typeof game.rating === "string" ? Number(game.rating) : game.rating; //  Transformo a Numb
-
+          console.log("NUM RATING ", numbRatingData);
           // 4. Comparo valores POR RANGO
           // >= q el selected y < que el sig numero al selected
           const matchesRating =
             numbRatingData >= numbSelectedRating &&
             numbRatingData < numbSelectedRating + 1;
-
+          console.log("MATCHES? -> ", matchesRating);
           // Si son iguales, guarda el juego
           if (matchesRating) {
             gamesWithRating.push(game);
@@ -130,7 +128,6 @@ export const GamesList = ({ data }: GameListProps) => {
     setClicked(
       searchTerm.trim() !== "" ||
         selectedPublisher.length > 0 ||
-        // selectedRating !== null, // <--- UN R
         selectedRating.length > 0,
     );
 

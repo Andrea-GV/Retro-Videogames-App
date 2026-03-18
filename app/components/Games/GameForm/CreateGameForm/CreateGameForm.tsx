@@ -49,10 +49,10 @@ export default function CreateGameForm() {
     // Necesita saber qué tipo de datos usando su model
     // ℹ️ Inicializo en vacío todo
     defaultValues: {
-      name: "",
-      release_date: "",
+      name: undefined,
+      release_date: undefined,
       players_num: undefined,
-      cover_url: "",
+      cover_url: undefined,
       rating: undefined,
       id_publisher: undefined,
     },
