@@ -1,8 +1,6 @@
 import Link from "next/link";
 import Nav from "@/app/components/Nav/Nav";
-// import Search from "@/app/components/Search/Search";
 import Icons from "@/app/components/Icons/Icons";
-
 import styles from "./Header.module.scss";
 
 interface HeaderProps {
@@ -34,14 +32,8 @@ const Header: React.FC<HeaderProps> = ({ page = "home" }) => {
 
         {/* Menú Nav */}
         <div className={styles["header__nav-wrapper"]}>
-          {/* <Nav className={styles["header__nav"]} /> */}
           <Nav />
         </div>
-
-        {/* Search PASA A CADA PAG*/}
-        {/* <div className={styles["header__search-wrapper"]}>
-          <Search />
-        </div> */}
 
         {/* icons */}
         <div>

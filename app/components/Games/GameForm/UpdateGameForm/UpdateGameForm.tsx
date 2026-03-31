@@ -76,7 +76,10 @@ export default function UpdateGameForm({ game }: UpdateGameFormProps) {
   const onSubmit = async (data: UpdateGame) => {
     console.log("🟢 Guardando?", data);
 
-    // ❓17 MARZO - DUDA. Por qué necesito revisar campos vacíos (de nuevo) asi lo hice cuando usaba pg en su backend. comprobar si se habían cambiado los valores
+    // Creo un objeto NUEVO sólo con los campos que se han editado
+    const cleanData: Partial<UpdateGame> = {};
+
+    // ❓17 MARZO - DUDA. Necesito revisar campos vacíos (de nuevo) asi lo hice cuando usaba pg en su backend. comprobar si se habían cambiado los valores
     // Para eliminar el error de campos vacíos, debería limpiar y revisar si hay un campo "" ?
     if (data) {
       console.log("DATA VIENE", data);

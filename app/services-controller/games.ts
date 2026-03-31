@@ -125,17 +125,32 @@ export async function updateGame(
 
   try {
     console.log(`Juego con id ${id} y data: `, data);
-    // return await prisma.game.update({
+    // Sigo mismo esquema que aplicaba con pg
+    // Comprobar qué info se ha modificado (sin campos UNDEFINED/NULL)
+    const updateData: any = {};
+    if (data.name !== undefined) updateData.name = data.name;
+    if (data.release_date !== undefined)
+      updateData.release_date = data.release_date;
+    if (data.players_num !== undefined)
+      updateData.players_num = data.players_num;
+    if (data.cover_url !== undefined) updateData.cover_url = data.cover_url;
+    if (data.rating !== undefined) updateData.rating = data.rating;
+    if (data.id_publisher !== undefined)
+      updateData.id_publisher = data.id_publisher;
+
+    // ahora la data se construye con updateData
+    console.log("UPDATE DATA --> ", updateData);
     const game = await prisma.game.update({
       where: { id_game: id },
-      data: {
-        name: data.name,
-        release_date: data.release_date,
-        players_num: data.players_num,
-        cover_url: data.cover_url,
-        rating: data.rating ? new Decimal(data.rating) : undefined,
-        id_publisher: data.id_publisher,
-      },
+      data: updateData,
+      // data: {
+      //   name: data.name,
+      //   release_date: data.release_date,
+      //   players_num: data.players_num,
+      //   cover_url: data.cover_url,
+      //   rating: data.rating ? new Decimal(data.rating) : undefined,
+      //   id_publisher: data.id_publisher,
+      // },
       include: {
         publisher: true, // Trae los datos del publisher
       },

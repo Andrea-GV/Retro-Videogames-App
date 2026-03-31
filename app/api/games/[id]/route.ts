@@ -236,7 +236,7 @@ export async function PATCH(
         { status: 400 },
       );
     }
-    console.log("Por qué no sigue por aquí?");
+    console.log("Sigue por aquí?");
     // 4.1 Si el body esta vacío (se manda SÓLO {}) -> que se haya dado a editar, pero no se edita nada / se borran TODOS los campos -> Devuelvo / muestro la ficha del juego
     if (Object.keys(body).length === 0) {
       console.log("No se ha modificado el body. Devuelvo el juego sin cambios");

@@ -321,10 +321,6 @@ export const GamesList = ({ data }: GameListProps) => {
               {selectedPublisher.map((publisherId) => (
                 <strong> "{selectedPublisherChip(publisherId)}"</strong>
               ))}
-              {/* {selectedRating && <strong> Rating: {selectedRating}</strong>} */}
-              {/* {selectedRating.map((rating) => (
-                <strong> Rating: {rating}</strong>
-              ))} */}
             </p>
           ) : (
             <section className={styles["games__grid"]}>
